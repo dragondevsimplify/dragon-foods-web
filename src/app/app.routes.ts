@@ -5,7 +5,7 @@ import { AuthComponent } from './layouts/auth/auth.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/admin/login',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
   {
