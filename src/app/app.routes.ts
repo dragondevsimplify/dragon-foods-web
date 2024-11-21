@@ -21,5 +21,15 @@ export const routes: Routes = [
         loadChildren: () => import('./views/auth/register/register.module').then(m => m.RegisterModule)
       },
     ]
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./views/admin/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+    ]
   }
 ];
