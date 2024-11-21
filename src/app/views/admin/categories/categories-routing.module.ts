@@ -6,10 +6,6 @@ const routes: Routes = [
   {
     path: '',
     component: CategoriesComponent,
-    title: 'Categories',
-    data: {
-      title: 'Categories'
-    }
   }
 ];
 

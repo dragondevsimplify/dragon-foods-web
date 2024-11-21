@@ -22,6 +22,5 @@ export class UserStore extends ComponentStore<State> {
 
   setUserInfo(userInfo: User) {
     this.patchState({ userInfo })
-    console.log(this.get())
   }
 }

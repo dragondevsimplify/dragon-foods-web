@@ -28,19 +28,23 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./views/admin/dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./views/admin/dashboard/dashboard.module').then(m => m.DashboardModule),
+        title: 'Dashboard',
       },
       {
         path: 'categories',
-        loadChildren: () => import('./views/admin/categories/categories.module').then(m => m.CategoriesModule)
+        loadChildren: () => import('./views/admin/categories/categories.module').then(m => m.CategoriesModule),
+        title: 'Categories'
       },
       {
         path: 'foods',
-        loadChildren: () => import('./views/admin/foods/foods.module').then(m => m.FoodsModule)
+        loadChildren: () => import('./views/admin/foods/foods.module').then(m => m.FoodsModule),
+        title: 'Foods'
       },
       {
         path: 'my-cart',
-        loadChildren: () => import('./views/admin/my-cart/my-cart.module').then(m => m.MyCartModule)
+        loadChildren: () => import('./views/admin/my-cart/my-cart.module').then(m => m.MyCartModule),
+        title: 'My Cart'
       },
     ]
   }
