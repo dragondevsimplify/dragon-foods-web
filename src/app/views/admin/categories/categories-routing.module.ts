@@ -5,7 +5,11 @@ import { CategoriesComponent } from './categories.component';
 const routes: Routes = [
   {
     path: '',
-    component: CategoriesComponent
+    component: CategoriesComponent,
+    title: 'Categories',
+    data: {
+      title: 'Categories'
+    }
   }
 ];
 

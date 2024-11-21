@@ -5,7 +5,8 @@ import { FoodsComponent } from './foods.component';
 const routes: Routes = [
   {
     path: '',
-    component: FoodsComponent
+    component: FoodsComponent,
+    title: 'Foods'
   }
 ];
 

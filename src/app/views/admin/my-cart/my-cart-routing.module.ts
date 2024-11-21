@@ -5,7 +5,8 @@ import { MyCartComponent } from './my-cart.component';
 const routes: Routes = [
   {
     path: '',
-    component: MyCartComponent
+    component: MyCartComponent,
+    title: 'My cart'
   }
 ];
 
