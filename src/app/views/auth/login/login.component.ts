@@ -32,6 +32,11 @@ export class LoginComponent {
   }
 
   signin() {
+    console.log(this.fg.get('password'))
+    if (this.fg.invalid) {
+      return
+    }
+
     const user = this.fg.value as UserSignin
     this.authService.signin(user).subscribe(res => {
       if (res.code !== 0) {
