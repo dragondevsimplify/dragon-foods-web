@@ -5,3 +5,13 @@
 input:focus-visible {
   outline: none;
 }
+
+@layer components {
+  .nav-link {
+    @apply rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white;
+  }
+
+  .nav-link.active {
+    @apply bg-indigo-600 text-white;
+  }
+}
