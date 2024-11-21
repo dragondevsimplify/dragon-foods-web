@@ -23,4 +23,8 @@ export class UserStore extends ComponentStore<State> {
   setUserInfo(userInfo: User) {
     this.patchState({ userInfo })
   }
+
+  logout() {
+    this.patchState({ userInfo: null })
+  }
 }
