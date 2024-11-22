@@ -1,8 +1,9 @@
-<div class="flex items-center justify-center" *ngIf="isShow">
-  <div class="fixed inset-0 bg-black opacity-50"></div>
-  <div class="p-6 bg-white shadow-md rounded-md z-10 min-w-[500px]">
-    <h6 class="uppercase font-semibold">Add category</h6>
-    <form class="mt-6 space-y-6" [formGroup]="fg" (ngSubmit)="createCategory()">
+<div class="fixed inset-0 flex items-center justify-center bg-black/50" *ngIf="isShow">
+  <div class="bg-white shadow-md rounded-md z-10 min-w-[500px]">
+    <div class="px-6 pt-6 pb-3 border-b-gray-200 border-b">
+      <h6 class="uppercase font-semibold">Add category</h6>
+    </div>
+    <form class="px-6 pb-6 pt-3 space-y-6" [formGroup]="fg" (ngSubmit)="createCategory()">
       <div>
         <label for="name" class="block text-sm/6 font-medium text-gray-900"
           >Category name</label
@@ -30,7 +31,7 @@
       </div>
 
       <div>
-        <div class="flex gap-6">
+        <div class="flex items-center justify-between">
           <label
             for="imageUrl"
             class="block text-sm/6 font-medium text-gray-900"
@@ -59,38 +60,7 @@
 
           <!-- Dropzone -->
           <ng-template #uploadImageFileTemplate>
-            <div class="flex items-center justify-center w-full">
-              <label
-                for="dropzone-file"
-                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-              >
-                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg
-                    class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 16"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                    />
-                  </svg>
-                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold">Click to upload</span> or drag and
-                    drop
-                  </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF
-                  </p>
-                </div>
-                <input id="dropzone-file" type="file" class="hidden" (change)="uploadImageFile($event)" />
-              </label>
-            </div>
+            <app-upload-file />
           </ng-template>
         </div>
         <div
@@ -107,8 +77,8 @@
         </div>
       </div>
 
-      <div class="flex gap-4 items-center justify-end">
-        <button type="submit" class="btn secondary" (click)="close()">
+      <div class="flex gap-3 items-center justify-end">
+        <button type="button" class="btn secondary" (click)="close()">
           Close
         </button>
         <button type="submit" class="btn">Create new category</button>
@@ -116,3 +86,7 @@
     </form>
   </div>
 </div>
+
+<!-- <app-confirm-dialog [(isShow)]="isShowConfirmUpload">
+  <div>Confirm upload image on server</div>
+</app-confirm-dialog> -->

@@ -1,0 +1,19 @@
+<div class="flex items-center justify-center z-50" *ngIf="isShow">
+  <div class="fixed inset-0 bg-black opacity-50"></div>
+  <div class="bg-white shadow-md rounded-md z-10 min-w-[500px]">
+    <div class="px-6 pt-6 pb-3 border-b-gray-200 border-b">
+      <h6 class="uppercase font-semibold">{{ title }}</h6>
+    </div>
+    <div class="px-6 pt-6 pb-3 space-y-6">
+      <ng-template></ng-template>
+      <div class="flex gap-4 items-center justify-end">
+        <button type="button" class="btn secondary" (click)="onReject()">
+          {{ rejectButtonText }}
+        </button>
+        <button type="button" class="btn" (click)="onResolve()">
+          {{ resolveButtonText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

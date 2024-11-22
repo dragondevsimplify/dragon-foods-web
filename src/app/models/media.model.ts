@@ -1,3 +1,3 @@
-export interface UploadImage {
-  file: File
+export interface FileUploaded {
+  url: string;
 }

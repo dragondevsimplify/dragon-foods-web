@@ -3,56 +3,54 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../validators/url.validator';
 import { MediaService } from '../../services/media.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { UploadFileComponent } from "../upload-file/upload-file.component";
 
 @Component({
   selector: 'app-add-category-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ConfirmDialogComponent, UploadFileComponent],
   templateUrl: './add-category-dialog.component.html',
 })
 export class AddCategoryDialogComponent {
-  fb = inject(FormBuilder)
-  mediaService = inject(MediaService)
+  fb = inject(FormBuilder);
+  mediaService = inject(MediaService);
 
   fg = this.fb.group({
     name: ['', Validators.required],
-    imageUrl: ['', CustomValidator.urlValidator]
-  })
+    imageUrl: ['', CustomValidator.urlValidator],
+  });
 
-  isUploadFromUrl = false
+  isUploadFromUrl = false;
+  isShowConfirmUpload = false;
+  isShowSaveWithoutImage = false;
 
-  @Input({ required: true }) isShow = false
-  @Output() isShowChange = new EventEmitter<boolean>()
+  imageFile?: File
+
+  @Input({ required: true }) isShow = false;
+  @Output() isShowChange = new EventEmitter<boolean>();
 
   get nameField() {
-    return this.fg.get('name')
+    return this.fg.get('name');
   }
 
   get imageUrlField() {
-    return this.fg.get('imageUrl')
+    return this.fg.get('imageUrl');
   }
 
   createCategory() {
-    console.log(this.fg.value)
+    console.log(this.fg.value);
   }
 
   close() {
-    this.isShowChange.emit(false)
+    this.isShowChange.emit(false);
   }
 
   switchUseUrl(e: Event) {
-    const checkbox = e.target as HTMLInputElement
+    const checkbox = e.target as HTMLInputElement;
     if (checkbox) {
-      this.isUploadFromUrl = checkbox.checked
+      this.isUploadFromUrl = checkbox.checked;
     }
-    this.imageUrlField?.reset()
-  }
-
-  uploadImageFile(e: Event) {
-    const fileInput = e.target as HTMLInputElement
-    if (fileInput && fileInput.files) {
-      const file = fileInput.files[0]
-      this.mediaService.uploadFile(file)
-    }
+    this.imageUrlField?.reset();
   }
 }
