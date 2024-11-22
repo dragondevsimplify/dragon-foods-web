@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CommonModule } from '@angular/common';
-import { filter, tap } from 'rxjs';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -21,6 +21,8 @@ export class AdminComponent implements OnInit {
   viewTitle = ''
 
   ngOnInit() {
+    this.viewTitle = this.route.firstChild?.snapshot.title ?? ''
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd) // Chỉ xử lý sự kiện NavigationEnd
     ).subscribe(() => {

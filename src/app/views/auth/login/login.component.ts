@@ -32,7 +32,6 @@ export class LoginComponent {
   }
 
   signin() {
-    console.log(this.fg.get('password'))
     if (this.fg.invalid) {
       return
     }

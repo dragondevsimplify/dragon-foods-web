@@ -6,3 +6,5 @@ export interface User {
 }
 
 export type UserSignin = Pick<User, 'username' | 'password'>
+
+export type UserSignup = Pick<User, 'username' | 'email' | 'password'>
