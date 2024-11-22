@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../validators/url.validator';
 
@@ -16,6 +16,11 @@ export class AddCategoryDialogComponent {
     imageUrl: ['', CustomValidator.urlValidator]
   })
 
+  isUploadFromUrl = false
+
+  @Input({ required: true }) isShow = false
+  @Output() isShowChange = new EventEmitter<boolean>()
+
   get nameField() {
     return this.fg.get('name')
   }
@@ -26,5 +31,17 @@ export class AddCategoryDialogComponent {
 
   createCategory() {
     console.log(this.fg.value)
+  }
+
+  close() {
+    this.isShowChange.emit(false)
+  }
+
+  switchUseUrl(e: Event) {
+    const checkbox = e.target as HTMLInputElement
+    if (checkbox) {
+      this.isUploadFromUrl = checkbox.checked
+    }
+    this.imageUrlField?.reset()
   }
 }

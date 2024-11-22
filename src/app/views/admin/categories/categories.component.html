@@ -1,3 +1,9 @@
 <div class="w-full">
-  <app-category-list />
+  <div>
+    <button class="btn" (click)="showAddCategoryDialog(true)">Add category</button>
+  </div>
+  <div class="mt-3">
+    <app-category-list />
+  </div>
+  <app-add-category-dialog [(isShow)]="isShowAddDialog" />
 </div>

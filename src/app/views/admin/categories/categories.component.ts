@@ -15,4 +15,10 @@ import { CategoryListComponent } from '../../../components/category-list/categor
   ],
   templateUrl: './categories.component.html',
 })
-export class CategoriesComponent {}
+export class CategoriesComponent {
+  isShowAddDialog = false
+
+  showAddCategoryDialog(isShow: boolean) {
+    this.isShowAddDialog = isShow
+  }
+}
