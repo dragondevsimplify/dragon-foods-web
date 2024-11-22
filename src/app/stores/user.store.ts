@@ -3,11 +3,11 @@ import { ComponentStore } from '@ngrx/component-store';
 import { User } from '../models/user';
 
 interface State {
-  userInfo: User | null
+  userInfo?: User
 }
 
 const initialState: State = {
-  userInfo: null
+  userInfo: undefined
 }
 
 @Injectable({
@@ -25,6 +25,6 @@ export class UserStore extends ComponentStore<State> {
   }
 
   logout() {
-    this.patchState({ userInfo: null })
+    this.patchState({ userInfo: undefined })
   }
 }

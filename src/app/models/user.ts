@@ -5,6 +5,13 @@ export interface User {
   password: string;
 }
 
-export type UserSignin = Pick<User, 'username' | 'password'>
+export interface UserSignin {
+  username: string;
+  password: string;
+}
 
-export type UserSignup = Pick<User, 'username' | 'email' | 'password'>
+export interface UserSignup {
+  username: string;
+  email: string;
+  password: string;
+}
