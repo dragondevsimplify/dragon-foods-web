@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { User } from '../models/user';
+import { User } from '../models/user.model';
 
 interface State {
   userInfo?: User

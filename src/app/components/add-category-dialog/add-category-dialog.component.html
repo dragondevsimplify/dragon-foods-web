@@ -54,11 +54,11 @@
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             placeholder="https://"
             formControlName="imageUrl"
-            *ngIf="isUploadFromUrl; else uploadImageFile"
+            *ngIf="isUploadFromUrl; else uploadImageFileTemplate"
           />
 
           <!-- Dropzone -->
-          <ng-template #uploadImageFile>
+          <ng-template #uploadImageFileTemplate>
             <div class="flex items-center justify-center w-full">
               <label
                 for="dropzone-file"
@@ -85,10 +85,10 @@
                     drop
                   </p>
                   <p class="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    SVG, PNG, JPG or GIF
                   </p>
                 </div>
-                <input id="dropzone-file" type="file" class="hidden" />
+                <input id="dropzone-file" type="file" class="hidden" (change)="uploadImageFile($event)" />
               </label>
             </div>
           </ng-template>

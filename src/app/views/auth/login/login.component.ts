@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { UserSignin } from '../../../models/user';
+import { UserSignin } from '../../../models/user.model';
 import { UserStore } from '../../../stores/user.store';
 import { errorTailorImports } from '@ngneat/error-tailor';
 

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../validators/url.validator';
+import { MediaService } from '../../services/media.service';
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -11,6 +12,8 @@ import { CustomValidator } from '../../validators/url.validator';
 })
 export class AddCategoryDialogComponent {
   fb = inject(FormBuilder)
+  mediaService = inject(MediaService)
+
   fg = this.fb.group({
     name: ['', Validators.required],
     imageUrl: ['', CustomValidator.urlValidator]
@@ -43,5 +46,13 @@ export class AddCategoryDialogComponent {
       this.isUploadFromUrl = checkbox.checked
     }
     this.imageUrlField?.reset()
+  }
+
+  uploadImageFile(e: Event) {
+    const fileInput = e.target as HTMLInputElement
+    if (fileInput && fileInput.files) {
+      const file = fileInput.files[0]
+      this.mediaService.uploadFile(file)
+    }
   }
 }
