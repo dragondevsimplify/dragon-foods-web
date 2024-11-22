@@ -5,11 +5,12 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { UserStore } from '../../../stores/user.store';
 import { UserSignup } from '../../../models/user';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, CommonModule, ReactiveFormsModule, errorTailorImports],
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {

@@ -5,11 +5,12 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { UserSignin } from '../../../models/user';
 import { UserStore } from '../../../stores/user.store';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule, errorTailorImports],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {

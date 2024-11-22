@@ -13,7 +13,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" [formGroup]="fg" (ngSubmit)="signup()">
+    <form class="space-y-6" [formGroup]="fg" (ngSubmit)="signup()" errorTailor>
       <div>
         <label for="username" class="block text-sm/6 font-medium text-gray-900"
           >Username</label
@@ -24,12 +24,8 @@
             required
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             formControlName="username"
+            controlErrorsClass="mt-2 text-sm text-red-500"
           />
-        </div>
-        <div *ngIf="usernameField && usernameField.invalid && (usernameField.dirty || usernameField.touched)"
-             class="mt-2 text-sm text-red-500"
-        >
-          <div *ngIf="usernameField.hasError('required')">Username is required.</div>
         </div>
       </div>
 
@@ -44,13 +40,8 @@
             required
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             formControlName="email"
+            controlErrorsClass="mt-2 text-sm text-red-500"
           />
-        </div>
-        <div *ngIf="emailField && emailField.invalid && (emailField.dirty || emailField.touched)"
-             class="mt-2 text-sm text-red-500"
-        >
-          <div *ngIf="emailField.hasError('required')">Email address is required.</div>
-          <div *ngIf="emailField.hasError('email')">Email is invalid.</div>
         </div>
       </div>
 
@@ -69,13 +60,8 @@
             required
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             formControlName="password"
+            controlErrorsClass="mt-2 text-sm text-red-500"
           />
-        </div>
-        <div *ngIf="passwordField && passwordField.invalid && (passwordField.dirty || passwordField.touched)"
-             class="mt-2 text-sm text-red-500"
-        >
-          <div *ngIf="passwordField.hasError('required')">Password is required.</div>
-          <div *ngIf="passwordField.hasError('minlenght')">Password must be least 8 characters.</div>
         </div>
       </div>
 
