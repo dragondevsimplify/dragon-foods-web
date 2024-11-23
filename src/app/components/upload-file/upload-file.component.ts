@@ -11,10 +11,22 @@ import { CommonModule } from '@angular/common';
 })
 export class UploadFileComponent {
   private mediaService = inject(MediaService)
-
+  private validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
   imageFile?: File
 
   @Output() uploaded = new EventEmitter<FileUploaded>()
+
+  get maxSize() {
+    return 2 // MB
+  }
+
+  get validFileType() {
+    return this.imageFile && this.validImageTypes.includes(this.imageFile.type)
+  }
+
+  get validFileSize() {
+    return this.imageFile && this.imageFile.size <= (1024 ** 2) * this.maxSize;
+  }
 
   openFile(e: Event) {
     const fileInput = e.target as HTMLInputElement;
@@ -24,6 +36,18 @@ export class UploadFileComponent {
 
     this.imageFile = fileInput.files[0];
     if (!this.imageFile) {
+      return
+    }
+
+    if (!this.validFileType) {
+      alert('Image type is invalid')
+      this.imageFile = undefined
+      return
+    }
+
+    if (!this.validFileSize) {
+      alert('Image size is greater than 2MB')
+      this.imageFile = undefined
       return
     }
   }
