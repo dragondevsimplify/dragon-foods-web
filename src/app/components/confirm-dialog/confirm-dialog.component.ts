@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent {
+  @Input() overlay = true
   @Input() title = 'Confirm dialog'
   @Input({ required: true }) isShow = false
   @Input() rejectButtonText = 'Cancel'

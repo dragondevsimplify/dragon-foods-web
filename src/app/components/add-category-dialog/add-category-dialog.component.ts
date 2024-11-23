@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../validators/url.validator';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -12,12 +12,12 @@ import { FileUploaded } from '../../models/media.model';
   imports: [CommonModule, ReactiveFormsModule, ConfirmDialogComponent, UploadFileComponent],
   templateUrl: './add-category-dialog.component.html',
 })
-export class AddCategoryDialogComponent {
+export class AddCategoryDialogComponent implements OnInit {
   fb = inject(FormBuilder);
 
   fg = this.fb.group({
     name: ['', Validators.required],
-    imageUrl: ['', CustomValidator.urlValidator],
+    imageUrl: [''],
   });
 
   isUploadFromUrl = false;
@@ -25,6 +25,12 @@ export class AddCategoryDialogComponent {
 
   @Input({ required: true }) isShow = false;
   @Output() isShowChange = new EventEmitter<boolean>();
+
+  ngOnInit() {
+    this.fg.valueChanges.subscribe(change => {
+      this.watchImageUrlChange(change.imageUrl)
+    })
+  }
 
   get nameField() {
     return this.fg.get('name');
@@ -34,8 +40,47 @@ export class AddCategoryDialogComponent {
     return this.fg.get('imageUrl');
   }
 
+  private watchImageUrlChange(newImageUrl: string | null | undefined) {
+    console.log(newImageUrl)
+    return newImageUrl ? this.addImageUrlFieldValidators() : this.removeImageUrlFieldValidators()
+  }
+
+  private addImageUrlFieldValidators() {
+    const field = this.fg.get('imageUrl')
+
+    if (!field) {
+      return
+    }
+
+    field.addValidators([CustomValidator.urlValidator])
+    field.updateValueAndValidity({
+      emitEvent: false,
+    })
+  }
+
+  private removeImageUrlFieldValidators() {
+    const field = this.fg.get('imageUrl')
+
+    if (!field) {
+      return
+    }
+
+    field.removeValidators(CustomValidator.urlValidator)
+    field.updateValueAndValidity({
+      emitEvent: false,
+    })
+  }
+
   createCategory() {
-    console.log(this.fg.value);
+    console.log(this.fg.get('imageUrl'));
+    if (this.fg.invalid) {
+      return;
+    }
+
+    // console.log(this.fg.value);
+    if (!this.fg.value.imageUrl) {
+      this.isShowSaveWithoutImage = true;
+    }
   }
 
   close() {
@@ -44,9 +89,11 @@ export class AddCategoryDialogComponent {
 
   switchUseUrl(e: Event) {
     const checkbox = e.target as HTMLInputElement;
+
     if (checkbox) {
       this.isUploadFromUrl = checkbox.checked;
     }
+
     this.imageUrlField?.reset();
   }
 
