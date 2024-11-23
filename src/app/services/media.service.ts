@@ -10,6 +10,13 @@ export class MediaService {
   private http = inject(HttpClient)
 
   uploadFile(file: File) {
-    return this.http.post<Response<FileUploaded>>('http://localhost:3000/media/uploadImage', file)
+    const fd = new FormData();
+    fd.append('file', file);
+
+    return this.http.post<Response<FileUploaded>>('http://localhost:3000/media/uploadImage', fd, {
+      headers: {
+        contentType: "multipart/form-data",
+      },
+    })
   }
 }

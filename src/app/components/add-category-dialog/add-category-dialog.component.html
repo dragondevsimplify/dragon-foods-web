@@ -60,7 +60,7 @@
 
           <!-- Dropzone -->
           <ng-template #uploadImageFileTemplate>
-            <app-upload-file />
+            <app-upload-file (uploaded)="fileUploaded($event)" (cleared)="fileCleared()" />
           </ng-template>
         </div>
         <div
@@ -87,6 +87,6 @@
   </div>
 </div>
 
-<!-- <app-confirm-dialog [(isShow)]="isShowConfirmUpload">
+<!-- <app-confirm-dialog [(isShow)]="isShowSaveWithoutImage">
   <div>Confirm upload image on server</div>
 </app-confirm-dialog> -->

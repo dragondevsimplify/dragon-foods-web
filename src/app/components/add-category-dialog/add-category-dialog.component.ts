@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../validators/url.validator';
-import { MediaService } from '../../services/media.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { UploadFileComponent } from "../upload-file/upload-file.component";
+import { FileUploaded } from '../../models/media.model';
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -14,7 +14,6 @@ import { UploadFileComponent } from "../upload-file/upload-file.component";
 })
 export class AddCategoryDialogComponent {
   fb = inject(FormBuilder);
-  mediaService = inject(MediaService);
 
   fg = this.fb.group({
     name: ['', Validators.required],
@@ -22,10 +21,7 @@ export class AddCategoryDialogComponent {
   });
 
   isUploadFromUrl = false;
-  isShowConfirmUpload = false;
   isShowSaveWithoutImage = false;
-
-  imageFile?: File
 
   @Input({ required: true }) isShow = false;
   @Output() isShowChange = new EventEmitter<boolean>();
@@ -52,5 +48,22 @@ export class AddCategoryDialogComponent {
       this.isUploadFromUrl = checkbox.checked;
     }
     this.imageUrlField?.reset();
+  }
+
+  fileUploaded(fileUploaded: FileUploaded) {
+    if (!fileUploaded.url) {
+      alert('Upload image failed');
+      return;
+    }
+
+    this.fg.patchValue({
+      imageUrl: fileUploaded.url
+    })
+  }
+
+  fileCleared() {
+    this.fg.patchValue({
+      imageUrl: ''
+    })
   }
 }
