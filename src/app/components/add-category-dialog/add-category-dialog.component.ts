@@ -5,6 +5,8 @@ import { CustomValidator } from '../../validators/url.validator';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { UploadFileComponent } from "../upload-file/upload-file.component";
 import { FileUploaded } from '../../models/media.model';
+import { CategoriesService } from '../../services/categories.service';
+import { CreateCategory } from '../../models/category.model';
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -13,7 +15,8 @@ import { FileUploaded } from '../../models/media.model';
   templateUrl: './add-category-dialog.component.html',
 })
 export class AddCategoryDialogComponent implements OnInit {
-  fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
+  private categoriesService = inject(CategoriesService)
 
   fg = this.fb.group({
     name: ['', Validators.required],
@@ -71,19 +74,35 @@ export class AddCategoryDialogComponent implements OnInit {
   }
 
   createCategory() {
+    this.categoriesService.createCategory(this.fg.value as CreateCategory)
+      .subscribe(res => {
+        if (res.code !== 0) {
+          alert(res.message)
+          return
+        }
+
+        this.close()
+      })
+  }
+
+  formSubmit() {
+    console.log(this.fg)
     this.fg.markAllAsTouched();
 
     if (this.fg.invalid) {
       return;
     }
 
-    console.log(this.fg.value);
     if (!this.fg.value.imageUrl) {
       this.isShowSaveWithoutImage = true;
+      return;
     }
+
+    this.createCategory()
   }
 
   close() {
+    this.isShowSaveWithoutImage = false;
     this.isShowChange.emit(false);
     this.fg.reset()
   }
@@ -113,10 +132,6 @@ export class AddCategoryDialogComponent implements OnInit {
     this.fg.patchValue({
       imageUrl: ''
     })
-  }
-
-  saveWithoutImage() {
-
   }
 
   cancelSaveWithoutImage() {

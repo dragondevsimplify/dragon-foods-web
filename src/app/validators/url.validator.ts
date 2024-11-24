@@ -4,7 +4,8 @@ export class CustomValidator {
   static urlValidator(control: AbstractControl): ValidationErrors | null {
     const urlPattern = new RegExp(
       '^(https?:\\/\\/)?' +
-      '([\\da-z.-]+)\\.([a-z.]{2,6})' +
+      '((localhost:\\d{1,5})|' +
+      '([\\da-z.-]+)\\.([a-z.]{2,6}))' +
       '([\\/\\w .-]*)*\\/?$',
       'i'
     )

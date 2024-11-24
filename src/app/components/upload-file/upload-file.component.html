@@ -43,11 +43,11 @@
     <div class="flex items-center justify-between">
       <div [hidden]="!isUploaded" class="text-green-700 text-sm w-1/2">Image uploaded successfully.</div>
       <div class="mt-3 flex items-center justify-end gap-3 flex-1">
-        <button class="btn secondary flex items-center gap-2" (click)="clear()">
+        <button class="btn secondary flex items-center gap-2" type="button" (click)="clear()">
           <i class="fa-solid fa-rotate"></i>
           <span>Clear</span>
         </button>
-        <button class="btn tertiary flex items-center gap-2" (click)="upload()">
+        <button class="btn tertiary flex items-center gap-2" type="button" (click)="upload()">
           <i class="fa-solid fa-upload"></i>
           <span>Upload</span>
         </button>

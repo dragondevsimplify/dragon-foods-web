@@ -12,3 +12,7 @@
 
 - Store:
   - Save user info to localStorage
+
+
+- Configs:
+  - Setup environments
