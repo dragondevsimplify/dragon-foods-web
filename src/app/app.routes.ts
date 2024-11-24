@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { AuthComponent } from './layouts/auth/auth.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,9 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivateChild: [
+      AuthGuard,
+    ],
     children: [
       {
         path: 'dashboard',
