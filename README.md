@@ -8,14 +8,14 @@
 
 - Route:
   - Display route title
-
+  - Can activate **admin routes**
 
 - Register:
   - Terms checkbox required
 
 
 - Store:
-  - Save user info to localStorage
+  - Save user info to `localStorage`
 
 
 - Configs:
