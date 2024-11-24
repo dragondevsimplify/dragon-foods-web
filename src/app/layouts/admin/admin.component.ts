@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
     this.viewTitle = this.route.firstChild?.snapshot.title ?? ''
 
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd) // Chỉ xử lý sự kiện NavigationEnd
+      filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       const childRoute = this.route.firstChild;
       if (childRoute) {

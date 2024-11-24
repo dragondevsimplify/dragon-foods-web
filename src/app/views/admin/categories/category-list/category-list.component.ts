@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CategoryItemComponent } from '../category-item/category-item.component';
-import { CategoriesStore } from '../../stores/categories.store';
+import { CategoriesStore } from '../../../../stores/categories.store';
 import { CommonModule } from '@angular/common';
 
 @Component({

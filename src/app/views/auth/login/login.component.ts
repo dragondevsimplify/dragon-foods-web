@@ -24,14 +24,6 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(8)]]
   })
 
-  get usernameField() {
-    return this.fg.get('username')
-  }
-
-  get passwordField() {
-    return this.fg.get('password')
-  }
-
   signin() {
     if (this.fg.invalid) {
       return

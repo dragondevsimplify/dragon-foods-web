@@ -6,6 +6,10 @@
   - Drag & drop image file
 
 
+- Route:
+  - Display route title
+
+
 - Register:
   - Terms checkbox required
 

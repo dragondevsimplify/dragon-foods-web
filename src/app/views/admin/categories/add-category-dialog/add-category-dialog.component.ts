@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CustomValidator } from '../../validators/url.validator';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { UploadFileComponent } from "../upload-file/upload-file.component";
-import { FileUploaded } from '../../models/media.model';
-import { CategoriesService } from '../../services/categories.service';
-import { CreateCategory } from '../../models/category.model';
-import { CategoriesStore } from '../../stores/categories.store';
+import { CustomValidator } from '../../../../validators/url.validator';
+import { ConfirmDialogComponent } from '../../../../components/confirm-dialog/confirm-dialog.component';
+import { UploadFileComponent } from "../../../../components/upload-file/upload-file.component";
+import { FileUploaded } from '../../../../models/media.model';
+import { CategoriesService } from '../../../../services/categories.service';
+import { CreateCategory } from '../../../../models/category.model';
+import { CategoriesStore } from '../../../../stores/categories.store';
 
 @Component({
   selector: 'app-add-category-dialog',

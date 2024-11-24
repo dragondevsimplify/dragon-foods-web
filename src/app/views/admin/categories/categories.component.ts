@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddCategoryDialogComponent } from '../../../components/add-category-dialog/add-category-dialog.component';
-import { CategoryListComponent } from '../../../components/category-list/category-list.component';
+import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
+import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoriesStore } from '../../../stores/categories.store';
 
 @Component({

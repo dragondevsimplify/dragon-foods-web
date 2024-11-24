@@ -26,10 +26,6 @@ export class RegisterComponent {
     isAgreeTerm: [false, Validators.requiredTrue],
   })
 
-  get isAgreeTermField() {
-    return this.fg.get('isAgreeTerm')
-  }
-
   signup() {
     if (this.fg.invalid) {
       return
