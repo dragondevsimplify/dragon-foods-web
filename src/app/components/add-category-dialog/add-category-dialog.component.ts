@@ -41,7 +41,6 @@ export class AddCategoryDialogComponent implements OnInit {
   }
 
   private watchImageUrlChange(newImageUrl: string | null | undefined) {
-    console.log(newImageUrl)
     return newImageUrl ? this.addImageUrlFieldValidators() : this.removeImageUrlFieldValidators()
   }
 
@@ -72,12 +71,13 @@ export class AddCategoryDialogComponent implements OnInit {
   }
 
   createCategory() {
-    console.log(this.fg);
+    this.fg.markAllAsTouched();
+
     if (this.fg.invalid) {
       return;
     }
 
-    // console.log(this.fg.value);
+    console.log(this.fg.value);
     if (!this.fg.value.imageUrl) {
       this.isShowSaveWithoutImage = true;
     }
@@ -85,6 +85,7 @@ export class AddCategoryDialogComponent implements OnInit {
 
   close() {
     this.isShowChange.emit(false);
+    this.fg.reset()
   }
 
   switchUseUrl(e: Event) {
@@ -112,5 +113,13 @@ export class AddCategoryDialogComponent implements OnInit {
     this.fg.patchValue({
       imageUrl: ''
     })
+  }
+
+  saveWithoutImage() {
+
+  }
+
+  cancelSaveWithoutImage() {
+    this.isShowSaveWithoutImage = false;
   }
 }

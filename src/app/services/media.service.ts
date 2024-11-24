@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Response } from '../models/response.model';
 import { FileUploaded } from '../models/media.model';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class MediaService {
     const fd = new FormData();
     fd.append('file', file);
 
-    return this.http.post<Response<FileUploaded>>('http://localhost:3000/media/uploadImage', fd, {
+    return this.http.post<Response<FileUploaded>>(environment.apiUrl + '/media/uploadImage', fd, {
       headers: {
         contentType: "multipart/form-data",
       },

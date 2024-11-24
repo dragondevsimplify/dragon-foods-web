@@ -5,8 +5,8 @@
     </div>
     <form class="px-6 pb-6 pt-3 space-y-6" [formGroup]="fg" (ngSubmit)="createCategory()">
       <div>
-        <label for="name" class="block text-sm/6 font-medium text-gray-900"
-          >Category name</label
+        <label for="name" class="block text-sm/6 font-medium text-gray-900 required"
+        >Category name</label
         >
         <div class="mt-2">
           <input
@@ -35,17 +35,17 @@
           <label
             for="imageUrl"
             class="block text-sm/6 font-medium text-gray-900"
-            >Upload image</label
+          >Upload image</label
           >
           <!-- Switch btn -->
           <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" value="" class="sr-only peer" (change)="switchUseUrl($event)" />
+            <input type="checkbox" value="" class="sr-only peer" (change)="switchUseUrl($event)"/>
             <div
               class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
             ></div>
             <span
               class="ms-3 text-sm font-medium text-gray-900"
-              >Use URL</span
+            >Use URL</span
             >
           </label>
         </div>
@@ -60,7 +60,7 @@
 
           <!-- Dropzone -->
           <ng-template #uploadImageFileTemplate>
-            <app-upload-file (uploaded)="fileUploaded($event)" (cleared)="fileCleared()" />
+            <app-upload-file (uploaded)="fileUploaded($event)" (cleared)="fileCleared()"/>
           </ng-template>
         </div>
         <div
@@ -87,6 +87,12 @@
   </div>
 </div>
 
-<app-confirm-dialog [(isShow)]="isShowSaveWithoutImage" [overlay]="false">
-  <div>Confirm upload image on server</div>
+<app-confirm-dialog
+  resolveButtonText="Save"
+  [(isShow)]="isShowSaveWithoutImage"
+  [overlay]="false"
+  (resolve)="saveWithoutImage()"
+  (reject)="cancelSaveWithoutImage()"
+>
+  <div>Create category without image?</div>
 </app-confirm-dialog>

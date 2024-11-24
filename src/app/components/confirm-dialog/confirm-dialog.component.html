@@ -7,8 +7,10 @@
       <h6 class="uppercase font-semibold">{{ title }}</h6>
     </div>
     <div class="px-6 pt-6 pb-3 space-y-6">
-      <ng-template></ng-template>
-      <div class="flex gap-4 items-center justify-end">
+      <div>
+        <ng-content></ng-content>
+      </div>
+      <div class="flex gap-4 items-center justify-end mt-3">
         <button type="button" class="btn secondary" (click)="onReject()">
           {{ rejectButtonText }}
         </button>
