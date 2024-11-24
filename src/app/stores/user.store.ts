@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { User } from '../models/user.model';
 
@@ -25,8 +25,8 @@ export class UserStore extends ComponentStore<State> {
   }
 
   readonly userInfo$ = this.select(state => state.userInfo)
-  readonly userInfo = this.get(state => state.userInfo)
-  readonly isAdmin = this.get(state => state.userInfo?.isAdmin)
+  readonly userInfo = this.selectSignal(state => state.userInfo)
+  readonly isAdmin = this.selectSignal(state => state.userInfo?.isAdmin)
 
   setUserInfo(userInfo: User) {
     this.patchState({ userInfo })
