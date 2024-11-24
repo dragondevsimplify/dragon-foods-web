@@ -14,9 +14,9 @@ export class CategoryItemComponent {
   @Input({ required: true }) data!: Category
 
   redirectToAddFood() {
-    this.router.navigate(['/admin/foods/add'], {
+    this.router.navigateByUrl('/admin/foods/add', {
       state: {
-        category: 'hello',
+        category: this.data,
       }
     });
   }

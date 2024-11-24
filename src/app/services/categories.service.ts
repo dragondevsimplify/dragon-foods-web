@@ -18,4 +18,8 @@ export class CategoriesService {
   getCategories() {
     return this.http.get<ResponseList<Category>>(environment.apiUrl + '/categories');
   }
+
+  getCategory(id: string) {
+
+  }
 }
