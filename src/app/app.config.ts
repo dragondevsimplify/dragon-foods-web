@@ -17,7 +17,8 @@ export const appConfig: ApplicationConfig = {
     provideErrorTailorConfig({
       errors: {
         useValue: errorMessages
-      }
+      },
+      controlCustomClass: ['hello']
     })
   ],
 };

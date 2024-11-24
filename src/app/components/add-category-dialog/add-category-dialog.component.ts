@@ -72,7 +72,7 @@ export class AddCategoryDialogComponent implements OnInit {
   }
 
   createCategory() {
-    console.log(this.fg.get('imageUrl'));
+    console.log(this.fg);
     if (this.fg.invalid) {
       return;
     }

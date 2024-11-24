@@ -22,19 +22,12 @@ export class RegisterComponent {
   fg = this.fb.group({
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]]
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    isAgreeTerm: [false, Validators.requiredTrue],
   })
 
-  get usernameField() {
-    return this.fg.get('username')
-  }
-
-  get emailField() {
-    return this.fg.get('email')
-  }
-
-  get passwordField() {
-    return this.fg.get('password')
+  get isAgreeTermField() {
+    return this.fg.get('isAgreeTerm')
   }
 
   signup() {

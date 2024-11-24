@@ -7,7 +7,7 @@ interface State {
 }
 
 const initialState: State = {
-  userInfo: undefined
+  userInfo: undefined,
 }
 
 @Injectable({
@@ -16,6 +16,12 @@ const initialState: State = {
 export class UserStore extends ComponentStore<State> {
   constructor() {
     super(initialState)
+
+    this.loadUserInfo()
+
+    this.userInfo$.subscribe(v => {
+      v ? localStorage.setItem('userInfo', JSON.stringify(v)) : localStorage.removeItem('userInfo')
+    })
   }
 
   readonly userInfo$ = this.select(state => state.userInfo)
@@ -26,5 +32,12 @@ export class UserStore extends ComponentStore<State> {
 
   logout() {
     this.patchState({ userInfo: undefined })
+  }
+
+  loadUserInfo() {
+    const userInfoJson = localStorage.getItem('userInfo')
+    if (userInfoJson) {
+      this.setUserInfo(JSON.parse(userInfoJson))
+    }
   }
 }
