@@ -7,6 +7,7 @@ import { UploadFileComponent } from "../upload-file/upload-file.component";
 import { FileUploaded } from '../../models/media.model';
 import { CategoriesService } from '../../services/categories.service';
 import { CreateCategory } from '../../models/category.model';
+import { CategoriesStore } from '../../stores/categories.store';
 
 @Component({
   selector: 'app-add-category-dialog',
@@ -17,6 +18,7 @@ import { CreateCategory } from '../../models/category.model';
 export class AddCategoryDialogComponent implements OnInit {
   private fb = inject(FormBuilder);
   private categoriesService = inject(CategoriesService)
+  private categoriesStore = inject(CategoriesStore)
 
   fg = this.fb.group({
     name: ['', Validators.required],
@@ -81,6 +83,7 @@ export class AddCategoryDialogComponent implements OnInit {
           return
         }
 
+        this.categoriesStore.loadCategories()
         this.close()
       })
   }

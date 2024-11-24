@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddCategoryDialogComponent } from '../../../components/add-category-dialog/add-category-dialog.component';
 import { CategoryListComponent } from '../../../components/category-list/category-list.component';
+import { CategoriesStore } from '../../../stores/categories.store';
 
 @Component({
   selector: 'app-categories',
@@ -15,8 +16,14 @@ import { CategoryListComponent } from '../../../components/category-list/categor
   ],
   templateUrl: './categories.component.html',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
+  private categoriesStore = inject(CategoriesStore);
+
   isShowAddDialog = false
+
+  ngOnInit() {
+    this.categoriesStore.loadCategories()
+  }
 
   showAddCategoryDialog(isShow: boolean) {
     this.isShowAddDialog = isShow

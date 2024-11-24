@@ -1,1 +1,8 @@
-<app-category-item />
+<ng-container *ngIf="vm$ | async as vm">
+  <div *ngIf="!vm.isLoading; else loadingTpl" class="grid grid-cols-3 gap-6">
+    <app-category-item *ngFor="let i of vm.categories" [data]="i" class="w-full" />
+  </div>
+  <ng-template #loadingTpl>
+    <div>Loading...</div>
+  </ng-template>
+</ng-container>
