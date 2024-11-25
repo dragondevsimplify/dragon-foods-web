@@ -9,6 +9,8 @@ import { errorTailorImports } from '@ngneat/error-tailor';
 import { DemoMceComponent } from '../../../../components/demo-mce/demo-mce.component';
 import { DemoSelectComponent } from "../../../../components/demo-select/demo-select.component";
 import { Tag } from '../../../../models/tag.model';
+import { DemoRadioComponent } from "../../../../components/demo-radio/demo-radio.component";
+import { FoodType } from '../../../../models/food-type.model';
 
 interface RouteState {
   category?: Category;
@@ -23,7 +25,8 @@ interface RouteState {
     UploadFileComponent,
     errorTailorImports,
     DemoMceComponent,
-    DemoSelectComponent
+    DemoSelectComponent,
+    DemoRadioComponent
 ],
   templateUrl: './add-food.component.html',
 })
@@ -32,9 +35,10 @@ export class AddFoodComponent implements OnInit {
   private fb = inject(FormBuilder);
   fg = this.fb.group({
     name: ['', Validators.required],
-    description: ['', Validators.required],
+    description: [''],
     imageUrl: [''],
-    price: [0, Validators.required],
+    price: [undefined, [Validators.required, Validators.min(0)]],
+    tags: [[], Validators.required]
   });
 
   category?: Category;
@@ -52,6 +56,26 @@ export class AddFoodComponent implements OnInit {
     {
       value: 'most_favorite',
       label: 'Most favorite'
+    }
+  ]
+  typeOptions: FoodType[] = [
+    {
+      value: 'food',
+      label: 'Food'
+    },
+    {
+      value: 'drink',
+      label: 'Drink'
+    }
+  ]
+  typeOptions2: FoodType[] = [
+    {
+      value: 'food1',
+      label: 'Food1'
+    },
+    {
+      value: 'drink1',
+      label: 'Drink1'
     }
   ]
 
@@ -161,6 +185,8 @@ export class AddFoodComponent implements OnInit {
   back() {}
 
   selectTags(v: any) {
-    console.log(v)
+    this.fg.patchValue({
+      tags: v
+    })
   }
 }

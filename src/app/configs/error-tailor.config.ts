@@ -9,4 +9,11 @@ export const errorMessages = {
   }) => `Expect ${requiredLength} but got ${actualLength}`,
   email: `Email address isn't valid`,
   invalidUrl: `URL isn't valid`,
+  min: ({
+    min,
+    actual
+  }: {
+    min: number;
+    actual: number;
+  }) => `Min value is ${min} but got ${actual}`
 };

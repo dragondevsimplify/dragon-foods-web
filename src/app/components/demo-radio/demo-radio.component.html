@@ -1,0 +1,23 @@
+<div
+  class="mt-2 gap-2 flex flex-col"
+  [ngClass]="{
+    'grid grid-cols-2': orientation === 'horizontal'
+  }"
+>
+  <div
+    *ngFor="let i of options"
+    class="flex items-center ps-2 border border-gray-200 rounded-md"
+  >
+    <input
+      [id]="'radio_' + i.value"
+      type="radio"
+      [name]="group"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer"
+    />
+    <label
+      [for]="'radio_' + i.value"
+      class="w-full py-2 ms-2 text-sm font-medium text-gray-900 cursor-pointer"
+      >{{ i.label }}</label
+    >
+  </div>
+</div>

@@ -31,6 +31,7 @@
           <input
             id="price"
             type="number"
+            placeholder="0"
             min="0"
             required
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
@@ -45,8 +46,20 @@
           >Tags</label
         >
         <div class="mt-2">
-          <app-demo-select placeholder="Select tags" [options]="tagOptions" (select)="selectTags($event)" [isMultiple]="true" />
+          <app-demo-select
+            placeholder="Select tags"
+            [options]="tagOptions"
+            (select)="selectTags($event)"
+            [isMultiple]="true"
+          />
         </div>
+      </div>
+
+      <div>
+        <label for="type" class="block text-sm/6 font-medium text-gray-900"
+          >Type</label
+        >
+        <app-demo-radio [options]="typeOptions" [orientation]="'horizontal'" />
       </div>
     </div>
 
@@ -58,10 +71,7 @@
           >Description</label
         >
         <div class="mt-2">
-          <app-demo-mce
-            formControlName="description"
-            controlErrorsClass="mt-2 text-sm text-red-500"
-          />
+          <app-demo-mce formControlName="description" />
         </div>
       </div>
 

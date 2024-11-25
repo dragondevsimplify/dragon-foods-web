@@ -18,7 +18,7 @@ export class DemoSelectComponent implements OnInit {
   private _placeholder = ''
 
   @Input({ required: true }) options: SelectItem[] = [];
-  @Input() placeholder = 'Choose an option';
+  @Input() placeholder = 'Select';
   @Input() isMultiple = false;
 
   @Output() select = new EventEmitter<SelectItem | SelectItem[]>();
