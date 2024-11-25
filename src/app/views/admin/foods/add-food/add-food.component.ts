@@ -43,6 +43,7 @@ export class AddFoodComponent implements OnInit {
     tags: [[], Validators.required],
     type: [undefined, Validators.required],
     extrast: [[]],
+    postDate: [Date.now(), Validators.required]
   });
 
   category?: Category;
