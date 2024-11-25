@@ -10,7 +10,8 @@ import { DemoMceComponent } from '../../../../components/demo-mce/demo-mce.compo
 import { DemoSelectComponent } from "../../../../components/demo-select/demo-select.component";
 import { Tag } from '../../../../models/tag.model';
 import { DemoRadioComponent } from "../../../../components/demo-radio/demo-radio.component";
-import { FoodType } from '../../../../models/food-type.model';
+import { FoodType, FoodExtrast } from '../../../../models/food.model';
+import { DemoCheckboxGroupComponent } from "../../../../components/demo-checkbox-group/demo-checkbox-group.component";
 
 interface RouteState {
   category?: Category;
@@ -26,7 +27,8 @@ interface RouteState {
     errorTailorImports,
     DemoMceComponent,
     DemoSelectComponent,
-    DemoRadioComponent
+    DemoRadioComponent,
+    DemoCheckboxGroupComponent
 ],
   templateUrl: './add-food.component.html',
 })
@@ -38,7 +40,9 @@ export class AddFoodComponent implements OnInit {
     description: [''],
     imageUrl: [''],
     price: [undefined, [Validators.required, Validators.min(0)]],
-    tags: [[], Validators.required]
+    tags: [[], Validators.required],
+    type: [undefined, Validators.required],
+    extrast: [[]],
   });
 
   category?: Category;
@@ -68,15 +72,19 @@ export class AddFoodComponent implements OnInit {
       label: 'Drink'
     }
   ]
-  typeOptions2: FoodType[] = [
+  extrastOptions: FoodExtrast[] = [
     {
-      value: 'food1',
-      label: 'Food1'
+      value: 'toping_1',
+      label: 'Toping 1'
     },
     {
-      value: 'drink1',
-      label: 'Drink1'
-    }
+      value: 'toping_2',
+      label: 'Toping 2'
+    },
+    {
+      value: 'toping_3',
+      label: 'Toping 3'
+    },
   ]
 
   get imageUrlField() {
