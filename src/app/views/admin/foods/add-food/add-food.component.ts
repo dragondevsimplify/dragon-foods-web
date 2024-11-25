@@ -183,10 +183,4 @@ export class AddFoodComponent implements OnInit {
   }
 
   back() {}
-
-  selectTags(v: any) {
-    this.fg.patchValue({
-      tags: v
-    })
-  }
 }

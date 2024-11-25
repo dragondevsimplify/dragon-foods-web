@@ -49,8 +49,9 @@
           <app-demo-select
             placeholder="Select tags"
             [options]="tagOptions"
-            (select)="selectTags($event)"
             [isMultiple]="true"
+            formControlName="tags"
+            controlErrorsClass="mt-2 text-sm text-red-500"
           />
         </div>
       </div>

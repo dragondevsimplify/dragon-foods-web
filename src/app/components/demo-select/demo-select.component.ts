@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 interface SelectItem {
   value: any;
@@ -11,20 +12,40 @@ interface SelectItem {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './demo-select.component.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DemoSelectComponent),
+      multi: true,
+    }
+  ]
 })
-export class DemoSelectComponent implements OnInit {
+export class DemoSelectComponent implements OnInit, ControlValueAccessor {
   isShowDropdown = false;
   selectedItems: SelectItem[] = [];
   private _placeholder = ''
+
+  onChange: (v: SelectItem | SelectItem[]) => void = () => {}
+  onTouched: () => void = () => {}
 
   @Input({ required: true }) options: SelectItem[] = [];
   @Input() placeholder = 'Select';
   @Input() isMultiple = false;
 
-  @Output() select = new EventEmitter<SelectItem | SelectItem[]>();
-
   ngOnInit() {
     this._placeholder = this.placeholder
+  }
+
+  writeValue(v: SelectItem[]): void {
+    this.selectedItems = v
+  }
+
+  registerOnChange(fn: (v: SelectItem | SelectItem[]) => void): void {
+    this.onChange = fn
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn
   }
 
   showDropdown(isShow: boolean) {
@@ -43,7 +64,7 @@ export class DemoSelectComponent implements OnInit {
       : this.selectedItems.filter((i) => i.value !== item.value);
 
     if (this.isMultiple) {
-      this.select.emit(this.selectedItems);
+      this.onChange(this.selectedItems)
 
       this.placeholder =
         this.selectedItems.length > 1
@@ -53,7 +74,7 @@ export class DemoSelectComponent implements OnInit {
       this.placeholder = item.label
       this.selectedItems = [item]
       this.showDropdown(false);
-      this.select.emit(item);
+      this.onChange(item)
     }
   }
 
