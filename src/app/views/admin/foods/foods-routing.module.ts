@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FoodsComponent } from './foods.component';
 import { AddFoodComponent } from './add-food/add-food.component';
-import { AddFoodResolver } from '../../../resolvers/add-food.resolver';
 
 const routes: Routes = [
   {
@@ -12,6 +11,7 @@ const routes: Routes = [
   {
     path: 'add',
     component: AddFoodComponent,
+    title: 'Add food'
     // resolve: {
     //   addFood: AddFoodResolver
     // }

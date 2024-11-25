@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
-import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../../../models/category.model';
 
 interface RouteState {
