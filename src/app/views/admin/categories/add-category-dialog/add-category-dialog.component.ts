@@ -8,11 +8,12 @@ import { FileUploaded } from '../../../../models/media.model';
 import { CategoriesService } from '../../../../services/categories.service';
 import { CreateCategory } from '../../../../models/category.model';
 import { CategoriesStore } from '../../../../stores/categories.store';
+import { errorTailorImports } from '@ngneat/error-tailor';
 
 @Component({
   selector: 'app-add-category-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ConfirmDialogComponent, UploadFileComponent],
+  imports: [CommonModule, ReactiveFormsModule, ConfirmDialogComponent, UploadFileComponent, errorTailorImports],
   templateUrl: './add-category-dialog.component.html',
 })
 export class AddCategoryDialogComponent implements OnInit {
@@ -35,10 +36,6 @@ export class AddCategoryDialogComponent implements OnInit {
     this.fg.valueChanges.subscribe(change => {
       this.watchImageUrlChange(change.imageUrl)
     })
-  }
-
-  get nameField() {
-    return this.fg.get('name');
   }
 
   get imageUrlField() {
@@ -105,6 +102,7 @@ export class AddCategoryDialogComponent implements OnInit {
 
   close() {
     this.isShowSaveWithoutImage = false;
+    this.isUploadFromUrl = false;
     this.isShowChange.emit(false);
     this.fg.reset()
   }

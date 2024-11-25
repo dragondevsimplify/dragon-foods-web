@@ -3,7 +3,7 @@
     <div class="px-6 pt-6 pb-3 border-b-gray-200 border-b">
       <h6 class="uppercase font-semibold">Add category</h6>
     </div>
-    <form class="px-6 pb-6 pt-3 space-y-6" [formGroup]="fg" (ngSubmit)="formSubmit()">
+    <form class="px-6 pb-6 pt-3 space-y-6" [formGroup]="fg" (ngSubmit)="formSubmit()" errorTailor>
       <div>
         <label for="name" class="block text-sm/6 font-medium text-gray-900 required"
         >Category name</label
@@ -14,19 +14,8 @@
             required
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             formControlName="name"
+            controlErrorsClass="mt-2 text-sm text-red-500"
           />
-        </div>
-        <div
-          *ngIf="
-            nameField &&
-            nameField.invalid &&
-            (nameField.dirty || nameField.touched)
-          "
-          class="mt-2 text-sm text-red-500"
-        >
-          <div *ngIf="nameField.hasError('required')">
-            Category name is required.
-          </div>
         </div>
       </div>
 
@@ -55,6 +44,7 @@
             class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
             placeholder="https://"
             formControlName="imageUrl"
+            controlErrorsClass="mt-2 text-sm text-red-500"
             *ngIf="isUploadFromUrl; else uploadImageFileTemplate"
           />
 
@@ -62,18 +52,6 @@
           <ng-template #uploadImageFileTemplate>
             <app-upload-file (uploaded)="fileUploaded($event)" (cleared)="fileCleared()"/>
           </ng-template>
-        </div>
-        <div
-          *ngIf="
-            imageUrlField &&
-            imageUrlField.invalid &&
-            (imageUrlField.dirty || imageUrlField.touched)
-          "
-          class="mt-2 text-sm text-red-500"
-        >
-          <div *ngIf="imageUrlField.hasError('invalidUrl')">
-            Image URL is invalid.
-          </div>
         </div>
       </div>
 
