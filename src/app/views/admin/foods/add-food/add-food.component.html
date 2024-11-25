@@ -45,7 +45,7 @@
           >Tags</label
         >
         <div class="mt-2">
-          <app-demo-select [options]="tagOptions" />
+          <app-demo-select placeholder="Select tags" [options]="tagOptions" (select)="selectTags($event)" [isMultiple]="true" />
         </div>
       </div>
     </div>

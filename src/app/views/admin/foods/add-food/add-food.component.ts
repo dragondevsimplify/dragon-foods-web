@@ -159,4 +159,8 @@ export class AddFoodComponent implements OnInit {
   }
 
   back() {}
+
+  selectTags(v: any) {
+    console.log(v)
+  }
 }

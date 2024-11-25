@@ -1,10 +1,18 @@
 <div class="relative">
-  <select
-    class="appearance-none bg-white shadow-sm text-gray-900 text-sm rounded-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-2.5"
-  >
-    <option disabled selected hidden value="">{{ placeholder }}</option>
-    <option *ngFor="let opt of options" [value]="opt.value">{{ opt.label }}</option>
-  </select>
+  <div
+  class="cursor-pointer appearance-none bg-white shadow-sm text-gray-900 text-sm rounded-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-2.5"
+  (click)="toggleDropdown()">
+    {{ placeholder }}
+  </div>
+  <div *ngIf="isShowDropdown" class="absolute left-0 w-full top-100 bg-white rounded-md shadow-sm border border-solid border-gray-500 flex flex-col">
+    <label *ngFor="let opt of options" [for]="opt.value" class="w-full cursor-pointer p-2 flex items-center gap-2 hover:bg-indigo-500 hover:text-white">
+      <input [id]="opt.value" type="checkbox"
+      [checked]="bindItemChecked(opt)"
+      (change)="selectItem($event, opt)"
+      />
+      {{ opt.label }}
+    </label>
+  </div>
   <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs">
     <i class="fa-solid fa-chevron-down"></i>
   </span>
