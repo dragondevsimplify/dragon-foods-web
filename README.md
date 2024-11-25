@@ -7,7 +7,7 @@
 
 
 - Route:
-  - Display route title
+  - Display route title (recursive)
   - Can activate **admin routes**
 
 - Register:

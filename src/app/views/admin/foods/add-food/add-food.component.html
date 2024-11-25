@@ -1,7 +1,12 @@
-<form class="pb-6 pt-3 space-y-6" [formGroup]="fg" (ngSubmit)="formSubmit()">
+<form
+  class="pb-6 pt-3 space-y-6"
+  [formGroup]="fg"
+  (ngSubmit)="formSubmit()"
+  errorTailor
+>
   <div>
     <label for="name" class="block text-sm/6 font-medium text-gray-900 required"
-    >Category name</label
+      >Food name</label
     >
     <div class="mt-2">
       <input
@@ -9,27 +14,40 @@
         required
         class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
         formControlName="name"
+        controlErrorsClass="mt-2 text-sm text-red-500"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="description" class="block text-sm/6 font-medium text-gray-900"
+      >Description</label
+    >
+    <div class="mt-2">
+      <app-demo-mce
+        formControlName="description"
+        controlErrorsClass="mt-2 text-sm text-red-500"
       />
     </div>
   </div>
 
   <div>
     <div class="flex items-center justify-between">
-      <label
-        for="imageUrl"
-        class="block text-sm/6 font-medium text-gray-900"
-      >Upload image</label
+      <label for="imageUrl" class="block text-sm/6 font-medium text-gray-900"
+        >Upload image</label
       >
       <!-- Switch btn -->
       <label class="inline-flex items-center cursor-pointer">
-        <input type="checkbox" value="" class="sr-only peer" (change)="switchUseUrl($event)"/>
+        <input
+          type="checkbox"
+          value=""
+          class="sr-only peer"
+          (change)="switchUseUrl($event)"
+        />
         <div
           class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
         ></div>
-        <span
-          class="ms-3 text-sm font-medium text-gray-900"
-        >Use URL</span
-        >
+        <span class="ms-3 text-sm font-medium text-gray-900">Use URL</span>
       </label>
     </div>
     <div class="mt-2">
@@ -38,32 +56,22 @@
         class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
         placeholder="https://"
         formControlName="imageUrl"
+        controlErrorsClass="mt-2 text-sm text-red-500"
         *ngIf="isUploadFromUrl; else uploadImageFileTemplate"
       />
 
       <!-- Dropzone -->
       <ng-template #uploadImageFileTemplate>
-        <app-upload-file (uploaded)="fileUploaded($event)" (cleared)="fileCleared()"/>
+        <app-upload-file
+          (uploaded)="fileUploaded($event)"
+          (cleared)="fileCleared()"
+        />
       </ng-template>
-    </div>
-    <div
-      *ngIf="
-        imageUrlField &&
-        imageUrlField.invalid &&
-        (imageUrlField.dirty || imageUrlField.touched)
-      "
-      class="mt-2 text-sm text-red-500"
-    >
-      <div *ngIf="imageUrlField.hasError('invalidUrl')">
-        Image URL is invalid.
-      </div>
     </div>
   </div>
 
   <div class="flex gap-3 items-center justify-end">
-    <button type="button" class="btn secondary" (click)="back()">
-      Back
-    </button>
-    <button type="submit" class="btn">Create new category</button>
+    <button type="button" class="btn secondary" (click)="back()">Back</button>
+    <button type="submit" class="btn">Create new food</button>
   </div>
 </form>

@@ -23,9 +23,6 @@ export class AdminComponent implements OnInit {
   viewTitle = '';
 
   ngOnInit() {
-    console.log(this.route);
-    console.log(this.route.firstChild?.snapshot);
-    // this.viewTitle = this.route.firstChild?.snapshot.title ?? ''
     const { snapshot } = this.route.firstChild || {};
     if (snapshot) {
       this.viewTitle = this.getViewTitle(snapshot) ?? '';
