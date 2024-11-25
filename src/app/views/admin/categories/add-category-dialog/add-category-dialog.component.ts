@@ -89,7 +89,6 @@ export class AddCategoryDialogComponent implements OnInit {
   }
 
   formSubmit() {
-    console.log(this.fg)
     this.fg.markAllAsTouched();
 
     if (this.fg.invalid) {
