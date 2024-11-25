@@ -4,69 +4,107 @@
   (ngSubmit)="formSubmit()"
   errorTailor
 >
-  <div>
-    <label for="name" class="block text-sm/6 font-medium text-gray-900 required"
-      >Food name</label
-    >
-    <div class="mt-2">
-      <input
-        id="name"
-        required
-        class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-        formControlName="name"
-        controlErrorsClass="mt-2 text-sm text-red-500"
-      />
-    </div>
-  </div>
+  <div class="grid grid-cols-2 gap-6">
+    <div class="space-y-6">
+      <div>
+        <label
+          for="name"
+          class="block text-sm/6 font-medium text-gray-900 required"
+          >Food name</label
+        >
+        <div class="mt-2">
+          <input
+            id="name"
+            required
+            class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+            formControlName="name"
+            controlErrorsClass="mt-2 text-sm text-red-500"
+          />
+        </div>
+      </div>
 
-  <div>
-    <label for="description" class="block text-sm/6 font-medium text-gray-900"
-      >Description</label
-    >
-    <div class="mt-2">
-      <app-demo-mce
-        formControlName="description"
-        controlErrorsClass="mt-2 text-sm text-red-500"
-      />
-    </div>
-  </div>
+      <div>
+        <label for="price" class="block text-sm/6 font-medium text-gray-900"
+          >Price</label
+        >
+        <div class="mt-2">
+          <input
+            id="price"
+            type="number"
+            min="0"
+            required
+            class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+            formControlName="price"
+            controlErrorsClass="mt-2 text-sm text-red-500"
+          />
+        </div>
+      </div>
 
-  <div>
-    <div class="flex items-center justify-between">
-      <label for="imageUrl" class="block text-sm/6 font-medium text-gray-900"
-        >Upload image</label
-      >
-      <!-- Switch btn -->
-      <label class="inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          value=""
-          class="sr-only peer"
-          (change)="switchUseUrl($event)"
-        />
-        <div
-          class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
-        ></div>
-        <span class="ms-3 text-sm font-medium text-gray-900">Use URL</span>
-      </label>
+      <div>
+        <label for="tags" class="block text-sm/6 font-medium text-gray-900"
+          >Tags</label
+        >
+        <div class="mt-2">
+          <app-demo-select [options]="tagOptions" />
+        </div>
+      </div>
     </div>
-    <div class="mt-2">
-      <input
-        id="imageUrl"
-        class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-        placeholder="https://"
-        formControlName="imageUrl"
-        controlErrorsClass="mt-2 text-sm text-red-500"
-        *ngIf="isUploadFromUrl; else uploadImageFileTemplate"
-      />
 
-      <!-- Dropzone -->
-      <ng-template #uploadImageFileTemplate>
-        <app-upload-file
-          (uploaded)="fileUploaded($event)"
-          (cleared)="fileCleared()"
-        />
-      </ng-template>
+    <div class="space-y-6">
+      <div>
+        <label
+          for="description"
+          class="block text-sm/6 font-medium text-gray-900"
+          >Description</label
+        >
+        <div class="mt-2">
+          <app-demo-mce
+            formControlName="description"
+            controlErrorsClass="mt-2 text-sm text-red-500"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label
+            for="imageUrl"
+            class="block text-sm/6 font-medium text-gray-900"
+            >Upload image</label
+          >
+          <!-- Switch btn -->
+          <label class="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              class="sr-only peer"
+              (change)="switchUseUrl($event)"
+            />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+            ></div>
+            <span class="ms-3 text-sm font-medium text-gray-900">Use URL</span>
+          </label>
+        </div>
+        <div class="mt-2">
+          <input
+            id="imageUrl"
+            class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+            placeholder="https://"
+            formControlName="imageUrl"
+            controlErrorsClass="mt-2 text-sm text-red-500"
+            *ngIf="isUploadFromUrl; else uploadImageFileTemplate"
+          />
+
+          <!-- Dropzone -->
+          <ng-template #uploadImageFileTemplate>
+            <app-upload-file
+              (uploaded)="fileUploaded($event)"
+              (cleared)="fileCleared()"
+            />
+          </ng-template>
+        </div>
+      </div>
     </div>
   </div>
 

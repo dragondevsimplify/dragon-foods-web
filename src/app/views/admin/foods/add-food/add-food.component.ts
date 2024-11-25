@@ -7,6 +7,8 @@ import { FileUploaded } from '../../../../models/media.model';
 import { UploadFileComponent } from '../../../../components/upload-file/upload-file.component';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { DemoMceComponent } from '../../../../components/demo-mce/demo-mce.component';
+import { DemoSelectComponent } from "../../../../components/demo-select/demo-select.component";
+import { Tag } from '../../../../models/tag.model';
 
 interface RouteState {
   category?: Category;
@@ -21,7 +23,8 @@ interface RouteState {
     UploadFileComponent,
     errorTailorImports,
     DemoMceComponent,
-  ],
+    DemoSelectComponent
+],
   templateUrl: './add-food.component.html',
 })
 export class AddFoodComponent implements OnInit {
@@ -31,11 +34,26 @@ export class AddFoodComponent implements OnInit {
     name: ['', Validators.required],
     description: ['', Validators.required],
     imageUrl: [''],
+    price: [0, Validators.required],
   });
 
   category?: Category;
   isUploadFromUrl = false;
   isShowSaveWithoutImage = false;
+  tagOptions: Tag[] = [
+    {
+      value: 'new_food',
+      label: 'New food'
+    },
+    {
+      value: 'special_food',
+      label: 'Special food'
+    },
+    {
+      value: 'most_favorite',
+      label: 'Most favorite'
+    }
+  ]
 
   get imageUrlField() {
     return this.fg.get('imageUrl');
