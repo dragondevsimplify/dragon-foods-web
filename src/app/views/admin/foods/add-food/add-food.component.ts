@@ -4,6 +4,7 @@ import { Category } from '../../../../models/category.model';
 import {
   FormArray,
   FormBuilder,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -23,11 +24,6 @@ import { CategoriesStore } from '@stores/categories.store';
 
 interface RouteState {
   category?: Category;
-}
-
-interface CategoryOption {
-  value: string;
-  label: string;
 }
 
 @Component({
@@ -63,10 +59,10 @@ export class AddFoodComponent implements OnInit {
     categoryId: ['', Validators.required],
     variants: this.fb.array([]),
   });
-  variantFg = this.fb.group({
+  variantFormGroupTemplate = {
     name: ['', Validators.required],
     size: ['', Validators.required],
-  });
+  }
 
   category?: Category;
   isUploadFromUrl = false;
@@ -116,7 +112,7 @@ export class AddFoodComponent implements OnInit {
   }
 
   get variantFormGroups() {
-    return (this.fg.get('variants') as FormArray).controls;
+    return (this.fg.get('variants') as FormArray).controls as FormGroup[];
   }
 
   ngOnInit() {
@@ -230,7 +226,8 @@ export class AddFoodComponent implements OnInit {
   back() {}
 
   addVariant() {
-    (this.fg.get('variants') as FormArray).push(this.variantFg);
-    console.log(this.variantFormGroups);
+    (this.fg.get('variants') as FormArray).push(this.fb.group({
+      ...this.variantFormGroupTemplate,
+    }));
   }
 }

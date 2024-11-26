@@ -170,29 +170,50 @@
             Add variant
           </button>
         </div>
-        <div class="mt-2">
-          <form *ngFor="let childForm of variantFormGroups">
-            <div>
-              <input
-                id="name"
-                placeholder="0"
-                required
-                class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                formControlName="name"
-                controlErrorsClass="mt-2 text-sm text-red-500"
-              />
-            </div>
-            <div class="mt-2">
-              <input
-                id="size"
-                placeholder="0"
-                required
-                class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                formControlName="size"
-                controlErrorsClass="mt-2 text-sm text-red-500"
-              />
-            </div>
-          </form>
+        <div class="mt-2 flex gap-6 flex-col">
+          <div
+            *ngFor="let childForm of variantFormGroups; let idx = index"
+            class="p-4 border-2 border-solid border-gray-800 rounded-lg hover:shadow-md"
+          >
+            <div class="font-semibold text-sm">Variant {{ idx + 1 }}</div>
+            <form [formGroup]="childForm" class="mt-6 space-y-6">
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm/6 font-medium text-gray-900 required"
+                  >Variant name</label
+                >
+                <div class="mt-2">
+                  <input
+                    [id]="'variant-name' + idx"
+                    placeholder="Enter variant name"
+                    required
+                    class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                    formControlName="name"
+                    controlErrorsClass="mt-2 text-sm text-red-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="size"
+                  class="block text-sm/6 font-medium text-gray-900 required"
+                  >Size</label
+                >
+                <div class="mt-2">
+                  <input
+                    [id]="'variant-size' + idx"
+                    placeholder="sm | md | lg | xl"
+                    required
+                    class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                    formControlName="size"
+                    controlErrorsClass="mt-2 text-sm text-red-500"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
