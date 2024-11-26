@@ -1,22 +1,33 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Category } from '../../../../models/category.model';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CustomValidator } from '../../../../validators/url.validator';
 import { FileUploaded } from '../../../../models/media.model';
 import { UploadFileComponent } from '@components/upload-file/upload-file.component';
 import { errorTailorImports } from '@ngneat/error-tailor';
 import { DemoMceComponent } from '@components/demo-mce/demo-mce.component';
-import { DemoSelectComponent } from "@components/demo-select/demo-select.component";
+import { DemoSelectComponent } from '@components/demo-select/demo-select.component';
 import { Tag } from '../../../../models/tag.model';
-import { DemoRadioComponent } from "@components/demo-radio/demo-radio.component";
+import { DemoRadioComponent } from '@components/demo-radio/demo-radio.component';
 import { FoodType, FoodExtrast } from '../../../../models/food.model';
-import { DemoCheckboxGroupComponent } from "@components/demo-checkbox-group/demo-checkbox-group.component";
+import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo-checkbox-group.component';
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
 import { getCurrentDateTimePicker } from '../../../../../utils/timer';
+import { CategoriesStore } from '@stores/categories.store';
 
 interface RouteState {
   category?: Category;
+}
+
+interface CategoryOption {
+  value: string;
+  label: string;
 }
 
 @Component({
@@ -31,13 +42,15 @@ interface RouteState {
     DemoSelectComponent,
     DemoRadioComponent,
     DemoCheckboxGroupComponent,
-    DemoDatetimePickerComponent
-],
+    DemoDatetimePickerComponent,
+  ],
   templateUrl: './add-food.component.html',
 })
 export class AddFoodComponent implements OnInit {
   private location = inject(Location);
   private fb = inject(FormBuilder);
+  private categoriesStore = inject(CategoriesStore);
+
   fg = this.fb.group({
     name: ['', Validators.required],
     description: [''],
@@ -46,61 +59,81 @@ export class AddFoodComponent implements OnInit {
     tags: [[], Validators.required],
     type: [undefined, Validators.required],
     extrast: [[]],
-    postDate: [getCurrentDateTimePicker(), Validators.required]
+    postDate: [getCurrentDateTimePicker(), Validators.required],
+    categoryId: ['', Validators.required],
+    variants: this.fb.array([]),
+  });
+  variantFg = this.fb.group({
+    name: ['', Validators.required],
+    size: ['', Validators.required],
   });
 
   category?: Category;
   isUploadFromUrl = false;
   isShowSaveWithoutImage = false;
+  categoryOptions$ = this.categoriesStore.categoryOptions$;
   tagOptions: Tag[] = [
     {
       value: 'new_food',
-      label: 'New food'
+      label: 'New food',
     },
     {
       value: 'special_food',
-      label: 'Special food'
+      label: 'Special food',
     },
     {
       value: 'most_favorite',
-      label: 'Most favorite'
-    }
-  ]
+      label: 'Most favorite',
+    },
+  ];
   typeOptions: FoodType[] = [
     {
       value: 'food',
-      label: 'Food'
+      label: 'Food',
     },
     {
       value: 'drink',
-      label: 'Drink'
-    }
-  ]
+      label: 'Drink',
+    },
+  ];
   extrastOptions: FoodExtrast[] = [
     {
       value: 'toping_1',
-      label: 'Toping 1'
+      label: 'Toping 1',
     },
     {
       value: 'toping_2',
-      label: 'Toping 2'
+      label: 'Toping 2',
     },
     {
       value: 'toping_3',
-      label: 'Toping 3'
+      label: 'Toping 3',
     },
-  ]
+  ];
 
   get imageUrlField() {
     return this.fg.get('imageUrl');
   }
 
+  get variantFormGroups() {
+    return (this.fg.get('variants') as FormArray).controls;
+  }
+
   ngOnInit() {
-    const routeState = this.location.getState() as RouteState;
-    this.category = routeState?.category;
+    this.categoriesStore.loadCategories();
+
     this.fg.valueChanges.subscribe((change) => {
       this.watchImageUrlChange(change.imageUrl);
     });
+
+    const routeState = this.location.getState() as RouteState;
+
+    this.category = routeState?.category;
+    if (this.category) {
+      this.fg.patchValue({
+        categoryId: this.category.id,
+      });
+    }
   }
 
   private watchImageUrlChange(newImageUrl: string | null | undefined) {
@@ -148,7 +181,7 @@ export class AddFoodComponent implements OnInit {
   }
 
   formSubmit() {
-    console.log(this.fg)
+    console.log(this.fg.value);
     // this.fg.markAllAsTouched();
 
     // if (this.fg.invalid) {
@@ -195,4 +228,9 @@ export class AddFoodComponent implements OnInit {
   }
 
   back() {}
+
+  addVariant() {
+    (this.fg.get('variants') as FormArray).push(this.variantFg);
+    console.log(this.variantFormGroups);
+  }
 }

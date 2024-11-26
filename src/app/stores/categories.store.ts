@@ -22,6 +22,10 @@ export class CategoriesStore extends ComponentStore<State> {
   private categoriesService = inject(CategoriesService);
 
   readonly vm$ = this.select(state => state)
+  readonly categoryOptions$ = this.select(state => state.categories.map(i => ({
+    value: i.id,
+    label: i.name,
+  })))
 
   constructor() {
     super(initialState)

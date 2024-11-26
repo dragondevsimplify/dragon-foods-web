@@ -24,7 +24,9 @@
       </div>
 
       <div>
-        <label for="price" class="block text-sm/6 font-medium text-gray-900"
+        <label
+          for="price"
+          class="block text-sm/6 font-medium text-gray-900 required"
           >Price</label
         >
         <div class="mt-2">
@@ -41,8 +43,24 @@
         </div>
       </div>
 
+      <div *ngIf="categoryOptions$ | async as categoryOptions">
+        <label class="block text-sm/6 font-medium text-gray-900 required"
+          >Category</label
+        >
+        <div class="mt-2">
+          <app-demo-select
+            placeholder="Select category"
+            [options]="categoryOptions"
+            formControlName="categoryId"
+            controlErrorsClass="mt-2 text-sm text-red-500"
+          />
+        </div>
+      </div>
+
       <div>
-        <label class="block text-sm/6 font-medium text-gray-900">Tags</label>
+        <label class="block text-sm/6 font-medium text-gray-900 required"
+          >Tags</label
+        >
         <div class="mt-2">
           <app-demo-select
             placeholder="Select tags"
@@ -55,7 +73,9 @@
       </div>
 
       <div>
-        <label class="block text-sm/6 font-medium text-gray-900">Type</label>
+        <label class="block text-sm/6 font-medium text-gray-900 required"
+          >Type</label
+        >
         <app-demo-radio
           [options]="typeOptions"
           [orientation]="'horizontal'"
@@ -73,7 +93,7 @@
       </div>
 
       <div>
-        <label class="block text-sm/6 font-medium text-gray-900"
+        <label class="block text-sm/6 font-medium text-gray-900 required"
           >Post date</label
         >
         <div class="mt-2">
@@ -118,6 +138,7 @@
             <span class="ms-3 text-sm font-medium text-gray-900">Use URL</span>
           </label>
         </div>
+
         <div class="mt-2">
           <input
             id="imageUrl"
@@ -135,6 +156,43 @@
               (cleared)="fileCleared()"
             />
           </ng-template>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-start gap-3">
+          <label
+            for="description"
+            class="block text-sm/6 font-medium text-gray-900"
+            >Variants</label
+          >
+          <button class="btn tertiary" type="button" (click)="addVariant()">
+            Add variant
+          </button>
+        </div>
+        <div class="mt-2">
+          <form *ngFor="let childForm of variantFormGroups">
+            <div>
+              <input
+                id="name"
+                placeholder="0"
+                required
+                class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                formControlName="name"
+                controlErrorsClass="mt-2 text-sm text-red-500"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                id="size"
+                placeholder="0"
+                required
+                class="block w-full rounded-md border-0 py-1.5 px-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                formControlName="size"
+                controlErrorsClass="mt-2 text-sm text-red-500"
+              />
+            </div>
+          </form>
         </div>
       </div>
     </div>

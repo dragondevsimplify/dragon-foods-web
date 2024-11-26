@@ -7,3 +7,8 @@ export interface FoodExtrast {
   value: string;
   label: string;
 }
+
+export interface FoodVariant {
+  name: string;
+  size: string;
+}
