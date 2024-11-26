@@ -4,15 +4,16 @@ import { Category } from '../../../../models/category.model';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidator } from '../../../../validators/url.validator';
 import { FileUploaded } from '../../../../models/media.model';
-import { UploadFileComponent } from '../../../../components/upload-file/upload-file.component';
+import { UploadFileComponent } from '@components/upload-file/upload-file.component';
 import { errorTailorImports } from '@ngneat/error-tailor';
-import { DemoMceComponent } from '../../../../components/demo-mce/demo-mce.component';
-import { DemoSelectComponent } from "../../../../components/demo-select/demo-select.component";
+import { DemoMceComponent } from '@components/demo-mce/demo-mce.component';
+import { DemoSelectComponent } from "@components/demo-select/demo-select.component";
 import { Tag } from '../../../../models/tag.model';
-import { DemoRadioComponent } from "../../../../components/demo-radio/demo-radio.component";
+import { DemoRadioComponent } from "@components/demo-radio/demo-radio.component";
 import { FoodType, FoodExtrast } from '../../../../models/food.model';
-import { DemoCheckboxGroupComponent } from "../../../../components/demo-checkbox-group/demo-checkbox-group.component";
-import { DemoDatetimePickerComponent } from "../../../../components/demo-datetime-picker/demo-datetime-picker.component";
+import { DemoCheckboxGroupComponent } from "@components/demo-checkbox-group/demo-checkbox-group.component";
+import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
+import { getCurrentDateTimePicker } from '../../../../../utils/timer';
 
 interface RouteState {
   category?: Category;
@@ -45,7 +46,7 @@ export class AddFoodComponent implements OnInit {
     tags: [[], Validators.required],
     type: [undefined, Validators.required],
     extrast: [[]],
-    postDate: ["2024-11-21T08:15", Validators.required]
+    postDate: [getCurrentDateTimePicker(), Validators.required]
   });
 
   category?: Category;
