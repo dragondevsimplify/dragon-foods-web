@@ -12,6 +12,7 @@ import { Tag } from '../../../../models/tag.model';
 import { DemoRadioComponent } from "../../../../components/demo-radio/demo-radio.component";
 import { FoodType, FoodExtrast } from '../../../../models/food.model';
 import { DemoCheckboxGroupComponent } from "../../../../components/demo-checkbox-group/demo-checkbox-group.component";
+import { DemoDatetimePickerComponent } from "../../../../components/demo-datetime-picker/demo-datetime-picker.component";
 
 interface RouteState {
   category?: Category;
@@ -28,7 +29,8 @@ interface RouteState {
     DemoMceComponent,
     DemoSelectComponent,
     DemoRadioComponent,
-    DemoCheckboxGroupComponent
+    DemoCheckboxGroupComponent,
+    DemoDatetimePickerComponent
 ],
   templateUrl: './add-food.component.html',
 })
@@ -43,7 +45,7 @@ export class AddFoodComponent implements OnInit {
     tags: [[], Validators.required],
     type: [undefined, Validators.required],
     extrast: [[]],
-    postDate: [Date.now(), Validators.required]
+    postDate: ["2024-11-21T08:15", Validators.required]
   });
 
   category?: Category;
