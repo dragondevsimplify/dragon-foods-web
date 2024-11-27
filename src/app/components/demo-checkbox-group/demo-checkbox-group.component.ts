@@ -40,8 +40,10 @@ export class DemoCheckboxGroupComponent
     this.group = uuidv4();
   }
 
-  writeValue(v: SelectItem[]): void {
-    this.selectedItems = v;
+  writeValue(v: (string | number)[]): void {
+    if (v.length) {
+      this.selectedItems = this.options.filter(i => v.includes(i.value));
+    }
   }
 
   registerOnChange(fn: (v: OnChangeType) => void): void {

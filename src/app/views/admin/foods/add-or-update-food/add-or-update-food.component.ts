@@ -152,6 +152,8 @@ export class AddOrUpdateFoodComponent implements OnInit {
           return
         }
 
+        console.log(res.data)
+
         this.fg.patchValue({
           ...res.data,
           postDate: res.data.postDate.toISOString().slice(0, 16)
