@@ -16,7 +16,11 @@ import { DemoMceComponent } from '@components/demo-mce/demo-mce.component';
 import { DemoSelectComponent } from '@components/demo-select/demo-select.component';
 import { Tag } from '../../../../models/tag.model';
 import { DemoRadioComponent } from '@components/demo-radio/demo-radio.component';
-import { FoodType, FoodExtrast, CreateFood } from '../../../../models/food.model';
+import {
+  FoodType,
+  FoodExtrast,
+  CreateFood,
+} from '../../../../models/food.model';
 import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo-checkbox-group.component';
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
 import { getCurrentDateTimePicker } from '../../../../../utils/timer';
@@ -30,7 +34,7 @@ interface RouteState {
   category?: Category;
 }
 
-type NullabelField = null | undefined
+type NullabelField = null | undefined;
 
 @Component({
   selector: 'app-add-or-update-food',
@@ -52,16 +56,19 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private location = inject(Location);
   private fb = inject(FormBuilder);
   private categoriesStore = inject(CategoriesStore);
-  private foodsStore = inject(FoodsStore)
-  private foodsService = inject(FoodsService)
-  private route = inject(ActivatedRoute)
-  private router = inject(Router)
+  private foodsStore = inject(FoodsStore);
+  private foodsService = inject(FoodsService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   fg = this.fb.nonNullable.group({
     name: ['', Validators.required],
     description: [<string | NullabelField>''],
     imageUrl: [<string | NullabelField>''],
-    price: [<number | NullabelField>undefined, [Validators.required, Validators.min(0)]],
+    price: [
+      <number | NullabelField>undefined,
+      [Validators.required, Validators.min(0)],
+    ],
     tags: [<string[]>[], Validators.required],
     type: ['', Validators.required],
     extrast: [<string[]>[]],
@@ -69,10 +76,6 @@ export class AddOrUpdateFoodComponent implements OnInit {
     categoryId: ['', Validators.required],
     variants: this.fb.array([]),
   });
-  variantFormGroupTemplate = {
-    name: ['', Validators.required],
-    size: ['', Validators.required],
-  }
 
   category?: Category;
   isUploadFromUrl = false;
@@ -141,25 +144,32 @@ export class AddOrUpdateFoodComponent implements OnInit {
       });
     }
 
-    this.loadFood()
+    this.loadFood();
   }
 
   private loadFood() {
-    const { id } = this.route.snapshot.params
+    const { id } = this.route.snapshot.params;
     if (id) {
-      this.foodsService.getFoodById(id).subscribe(res => {
+      this.foodsService.getFoodById(id).subscribe((res) => {
         if (res.code !== 0 || !res.data) {
-          alert(res.message)
-          return
+          alert(res.message);
+          return;
         }
 
-        console.log(res.data)
+        const food = res.data;
 
         this.fg.patchValue({
-          ...res.data,
-          postDate: moment(res.data.postDate).toISOString(true).slice(0, 16),
-        })
-      })
+          ...food,
+          postDate: moment(food.postDate).toISOString(true).slice(0, 16),
+        });
+
+        food.variants.forEach((variantForm) => {
+          this.addVariant({
+            name: variantForm.name,
+            size: variantForm.size,
+          });
+        });
+      });
     }
   }
 
@@ -196,21 +206,22 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   createFood() {
-    const data = this.fg.value
+    const data = this.fg.value;
 
-    this.foodsService.createFood({
-      ...data,
-      postDate: data.postDate ? new Date(data.postDate) : undefined
-    } as CreateFood)
-      .subscribe(res => {
+    this.foodsService
+      .createFood({
+        ...data,
+        postDate: data.postDate ? new Date(data.postDate) : undefined,
+      } as CreateFood)
+      .subscribe((res) => {
         if (res.code !== 0) {
-          alert(res.message)
-          return
+          alert(res.message);
+          return;
         }
 
-        this.foodsStore.loadFoods()
-        this.router.navigateByUrl('/admin/foods')
-      })
+        this.foodsStore.loadFoods();
+        this.router.navigateByUrl('/admin/foods');
+      });
   }
 
   formSubmit() {
@@ -251,18 +262,32 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   back() {
-    this.router.navigateByUrl('/admin/foods')
+    this.router.navigateByUrl('/admin/foods');
   }
 
-  addVariant() {
-    (this.fg.get('variants') as FormArray).push(this.fb.group({
-      ...this.variantFormGroupTemplate,
-    }));
+  addVariant(
+    {
+      name,
+      size,
+    }: {
+      name: string;
+      size: string;
+    } = {
+      name: '',
+      size: '',
+    }
+  ) {
+    (this.fg.get('variants') as FormArray).push(
+      this.fb.group({
+        name: [name, Validators.required],
+        size: [size, Validators.required],
+      })
+    );
   }
 
   removeImage() {
     this.fg.patchValue({
-      imageUrl: undefined
-    })
+      imageUrl: undefined,
+    });
   }
 }
