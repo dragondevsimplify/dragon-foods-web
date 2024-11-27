@@ -238,6 +238,10 @@
 
   <div class="flex gap-3 items-center justify-end">
     <button type="button" class="btn secondary" (click)="back()">Back</button>
-    <button type="submit" class="btn">Create new food</button>
+    <button type="submit" class="btn" [disabled]="!detectFormValueChanged" [ngClass]="{
+      'disabled': !detectFormValueChanged
+    }">
+      {{ currentFood ? 'Save' : 'Create new food' }}
+    </button>
   </div>
 </form>

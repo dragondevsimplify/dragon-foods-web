@@ -20,6 +20,7 @@ import {
   FoodType,
   FoodExtrast,
   CreateFood,
+  Food,
 } from '../../../../models/food.model';
 import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo-checkbox-group.component';
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
@@ -29,6 +30,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FoodsService } from '@services/foods.service';
 import { FoodsStore } from '@stores/foods.store';
 import moment from 'moment';
+import * as _ from 'lodash'
 
 interface RouteState {
   category?: Category;
@@ -60,6 +62,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private foodsService = inject(FoodsService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+
+  private _currentFood?: Food
+  private _originalFormData?: unknown
+  private _detectFormValueChanged: boolean = false
 
   fg = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -120,6 +126,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
     },
   ];
 
+  get currentFood() {
+    return this._currentFood
+  }
+
   get imageUrlField() {
     return this.fg.get('imageUrl');
   }
@@ -128,10 +138,15 @@ export class AddOrUpdateFoodComponent implements OnInit {
     return (this.fg.get('variants') as FormArray).controls as FormGroup[];
   }
 
+  get detectFormValueChanged() {
+    return this._detectFormValueChanged
+  }
+
   ngOnInit() {
     this.categoriesStore.loadCategories();
 
     this.fg.valueChanges.subscribe((change) => {
+      this.detectFormValueChangedFunc(change)
       this.watchImageUrlChange(change.imageUrl);
     });
 
@@ -145,6 +160,15 @@ export class AddOrUpdateFoodComponent implements OnInit {
     }
 
     this.loadFood();
+  }
+
+  private detectFormValueChangedFunc(change: unknown) {
+    if (!this._originalFormData) {
+      return
+    }
+
+    this._detectFormValueChanged = !_.isEqual(change, this._originalFormData)
+    console.log("🚀 ~ this._detectFormValueChanged:", this._detectFormValueChanged)
   }
 
   private loadFood() {
@@ -169,6 +193,9 @@ export class AddOrUpdateFoodComponent implements OnInit {
             size: variantForm.size,
           });
         });
+
+        this._currentFood = food
+        this._originalFormData = structuredClone(this.fg.value)
       });
     }
   }
