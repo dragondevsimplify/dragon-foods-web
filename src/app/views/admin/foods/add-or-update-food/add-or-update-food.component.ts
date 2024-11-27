@@ -24,6 +24,7 @@ import { CategoriesStore } from '@stores/categories.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodsService } from '@services/foods.service';
 import { FoodsStore } from '@stores/foods.store';
+import moment from 'moment';
 
 interface RouteState {
   category?: Category;
@@ -153,10 +154,12 @@ export class AddOrUpdateFoodComponent implements OnInit {
         }
 
         console.log(res.data)
+        // const postDate = res.data.postDate.toISOString().slice(0, 16)
+        const postDate = moment(res.data.postDate).toISOString(true).slice(0, 16)
 
         this.fg.patchValue({
           ...res.data,
-          postDate: res.data.postDate.toISOString().slice(0, 16)
+          postDate,
         })
       })
     }
