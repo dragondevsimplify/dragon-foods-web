@@ -40,9 +40,9 @@ interface RouteState {
     DemoCheckboxGroupComponent,
     DemoDatetimePickerComponent,
   ],
-  templateUrl: './add-food.component.html',
+  templateUrl: './add-or-update-food.component.html',
 })
-export class AddFoodComponent implements OnInit {
+export class AddOrUpdateFoodComponent implements OnInit {
   private location = inject(Location);
   private fb = inject(FormBuilder);
   private categoriesStore = inject(CategoriesStore);

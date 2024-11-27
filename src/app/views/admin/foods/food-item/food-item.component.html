@@ -1,8 +1,12 @@
 <div class="flex gap-6 p-6 bg-white text-zinc-800 border-2 border-solid border-gray-500 rounded-lg hover:shadow-lg transition-shadow">
   <div class="w-32 h-32 overflow-hidden rounded-lg">
-    <img [src]="data.imageUrl || 'https://placehold.co/128'" alt="Category image" class="block object-cover object-center">
+    <img [src]="data.imageUrl || 'https://placehold.co/128'" alt="Category image" class="w-full h-full block object-cover object-center">
   </div>
-  <div>
+  <div class="flex flex-col gap-4">
     <div class="text-2xl font-semibold">{{ data.name }}</div>
+    <div class="py-1 px-2 text-center w-max text-xs rounded-md bg-teal-200 text-teal-600 border-teal-400 border border-solid font-semibold">{{ data.category?.name }}</div>
+    <div>
+      <a [routerLink]="['/admin/foods/edit', data.id]" class="btn">Edit</a>
+    </div>
   </div>
 </div>

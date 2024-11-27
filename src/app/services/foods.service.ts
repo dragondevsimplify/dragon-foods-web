@@ -34,6 +34,11 @@ export class FoodsService {
           size: 'md',
         },
       ],
+      category: {
+        id: '6742a0e0ab7ce85a927b9182',
+        name: 'Coca cola',
+        imageUrl: 'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg'
+      },
     },
     {
       id: uuidv4(),
@@ -53,6 +58,11 @@ export class FoodsService {
           size: 'lg',
         },
       ],
+      category: {
+        id: '6742a0e0ab7ce85a927b9182',
+        name: 'Coca cola',
+        imageUrl: 'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg'
+      },
     },
     {
       id: uuidv4(),
@@ -80,6 +90,11 @@ export class FoodsService {
           size: 'lg',
         },
       ],
+      category: {
+        id: '6742d1bdab7ce85a927b9184',
+        name: 'KFC',
+        imageUrl: 'http://localhost:3000/uploads/ff7b1dca-5e93-4236-b54d-0681e871b4ff.jpg'
+      }
     },
   ];
 

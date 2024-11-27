@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FoodsComponent } from './foods.component';
-import { AddFoodComponent } from './add-food/add-food.component';
+import { AddOrUpdateFoodComponent } from './add-or-update-food/add-or-update-food.component';
 
 const routes: Routes = [
   {
@@ -10,12 +10,14 @@ const routes: Routes = [
   },
   {
     path: 'add',
-    component: AddFoodComponent,
+    component: AddOrUpdateFoodComponent,
     title: 'Add food'
-    // resolve: {
-    //   addFood: AddFoodResolver
-    // }
-  }
+  },
+  {
+    path: 'edit/:id',
+    component: AddOrUpdateFoodComponent,
+    title: 'Add food'
+  },
 ];
 
 @NgModule({

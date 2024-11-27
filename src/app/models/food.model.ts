@@ -1,3 +1,5 @@
+import { Category } from "./category.model";
+
 export interface Food {
   id: string;
   name: string;
@@ -10,6 +12,9 @@ export interface Food {
   postDate: Date;
   categoryId: string;
   variants: FoodVariant[];
+
+  // Preloads
+  category?: Category
 }
 
 export interface FoodType {
