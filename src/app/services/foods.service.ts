@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { CreateFood, Food } from '@models/food.model';
 import { Response, ResponseList } from '@models/response.model';
 import { environment } from 'environments/environment.development';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class FoodsService {
   private http = inject(HttpClient);
   foods: Food[] = [
     {
-      id: uuidv4(),
+      id: 'FOOD1',
       name: 'Coca Cola 1',
       description: 'Description Coca Cola 1',
       imageUrl:
@@ -41,7 +41,7 @@ export class FoodsService {
       },
     },
     {
-      id: uuidv4(),
+      id: 'FOOD2',
       name: 'Coca Cola 2',
       description: 'Description Coca Cola 2',
       imageUrl:
@@ -65,7 +65,7 @@ export class FoodsService {
       },
     },
     {
-      id: uuidv4(),
+      id: 'FOOD3',
       name: 'Chicken ABC',
       description: 'Description Chicken ABC',
       imageUrl:
@@ -117,5 +117,19 @@ export class FoodsService {
     });
   }
 
-  getFoodById(id: string) {}
+  getFoodById(id: string) {
+    const food = this.foods.find(i => i.id === id)
+
+    const res = food ? {
+      code: 0,
+      data: food,
+      message: 'Get food successfully'
+    } : {
+      code: 1,
+      data: null,
+      message: 'Not found'
+    }
+
+    return of(res)
+  }
 }

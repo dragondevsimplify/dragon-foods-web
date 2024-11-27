@@ -21,6 +21,8 @@ import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
 import { getCurrentDateTimePicker } from '../../../../../utils/timer';
 import { CategoriesStore } from '@stores/categories.store';
+import { ActivatedRoute } from '@angular/router';
+import { FoodsService } from '@services/foods.service';
 
 interface RouteState {
   category?: Category;
@@ -46,6 +48,8 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private location = inject(Location);
   private fb = inject(FormBuilder);
   private categoriesStore = inject(CategoriesStore);
+  private foodsService = inject(FoodsService)
+  private route = inject(ActivatedRoute)
 
   fg = this.fb.group({
     name: ['', Validators.required],
@@ -130,6 +134,15 @@ export class AddOrUpdateFoodComponent implements OnInit {
         categoryId: this.category.id,
       });
     }
+
+    this.loadFood()
+  }
+
+  private loadFood() {
+    const { id } = this.route.snapshot.params
+    this.foodsService.getFoodById(id).subscribe(food => {
+      console.log(food)
+    })
   }
 
   private watchImageUrlChange(newImageUrl: string | null | undefined) {
