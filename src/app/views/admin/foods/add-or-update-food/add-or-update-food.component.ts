@@ -154,12 +154,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
         }
 
         console.log(res.data)
-        // const postDate = res.data.postDate.toISOString().slice(0, 16)
-        const postDate = moment(res.data.postDate).toISOString(true).slice(0, 16)
 
         this.fg.patchValue({
           ...res.data,
-          postDate,
+          postDate: moment(res.data.postDate).toISOString(true).slice(0, 16),
         })
       })
     }
@@ -229,8 +227,6 @@ export class AddOrUpdateFoodComponent implements OnInit {
     if (checkbox) {
       this.isUploadFromUrl = checkbox.checked;
     }
-
-    this.imageUrlField?.reset();
   }
 
   fileUploaded(fileUploaded: FileUploaded) {
@@ -262,5 +258,11 @@ export class AddOrUpdateFoodComponent implements OnInit {
     (this.fg.get('variants') as FormArray).push(this.fb.group({
       ...this.variantFormGroupTemplate,
     }));
+  }
+
+  removeImage() {
+    this.fg.patchValue({
+      imageUrl: undefined
+    })
   }
 }

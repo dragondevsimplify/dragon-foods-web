@@ -21,7 +21,6 @@ export class DemoDatetimePickerComponent implements ControlValueAccessor {
   onTouched: () => void = () => {};
 
   writeValue(v: Date): void {
-    console.log("🚀 ~ DemoDatetimePickerComponent ~ writeValue ~ v:", v)
     this.value = v;
   }
 
