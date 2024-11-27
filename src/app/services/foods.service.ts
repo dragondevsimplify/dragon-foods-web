@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { CreateFood, Food } from '@models/food.model';
 import { Response, ResponseList } from '@models/response.model';
 import { environment } from 'environments/environment.development';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -37,7 +37,8 @@ export class FoodsService {
       category: {
         id: '6742a0e0ab7ce85a927b9182',
         name: 'Coca cola',
-        imageUrl: 'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg'
+        imageUrl:
+          'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg',
       },
     },
     {
@@ -45,7 +46,7 @@ export class FoodsService {
       name: 'Coca Cola 2',
       description: 'Description Coca Cola 2',
       imageUrl:
-        "http://localhost:3000/uploads/4197f99f-9187-4d4c-9164-67028b99c604.jpg",
+        'http://localhost:3000/uploads/4197f99f-9187-4d4c-9164-67028b99c604.jpg',
       price: 320000,
       tags: ['most_favorite'],
       type: 'drink',
@@ -61,7 +62,8 @@ export class FoodsService {
       category: {
         id: '6742a0e0ab7ce85a927b9182',
         name: 'Coca cola',
-        imageUrl: 'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg'
+        imageUrl:
+          'http://localhost:3000/uploads/27c8c9b2-0377-494c-86b1-988c205fbfc6.jpg',
       },
     },
     {
@@ -69,7 +71,7 @@ export class FoodsService {
       name: 'Chicken ABC',
       description: 'Description Chicken ABC',
       imageUrl:
-        "http://localhost:3000/uploads/b34846a5-ed2e-423c-a2f8-d488ae8cbc2c.jpg",
+        'http://localhost:3000/uploads/b34846a5-ed2e-423c-a2f8-d488ae8cbc2c.jpg',
       price: 200,
       tags: ['new_food', 'special_food', 'most_favorite'],
       type: 'food',
@@ -93,13 +95,43 @@ export class FoodsService {
       category: {
         id: '6742d1bdab7ce85a927b9184',
         name: 'KFC',
-        imageUrl: 'http://localhost:3000/uploads/ff7b1dca-5e93-4236-b54d-0681e871b4ff.jpg'
-      }
+        imageUrl:
+          'http://localhost:3000/uploads/ff7b1dca-5e93-4236-b54d-0681e871b4ff.jpg',
+      },
     },
   ];
 
+  get newFoodId() {
+    const prefix = 'FOOD'
+    const ids = this.foods.map((i) => i.id).sort();
+
+    if (!ids) {
+      return prefix + 1;
+    }
+
+    const idNumber = this.extractNumber(ids.at(-1)!);
+    return prefix + (idNumber + 1);
+  }
+
+  private extractNumber(idStr: string) {
+    const s = idStr.match(/\d+$/);
+    return s ? +s[0] : NaN;
+  }
+
   createFood(model: CreateFood) {
-    return this.http.post<Response<Food>>(environment.apiUrl + '/foods', model);
+    // return this.http.post<Response<Food>>(environment.apiUrl + '/foods', model);
+    return of<Response<Food>>({
+      code: 0,
+      data: {
+        ...model,
+        id: this.newFoodId,
+      },
+      message: 'Get food successfully',
+    }).pipe(
+      tap(({ data: newFood }) => {
+        this.foods.push(newFood)
+      })
+    );
   }
 
   getFoods() {
@@ -118,18 +150,20 @@ export class FoodsService {
   }
 
   getFoodById(id: string) {
-    const food = this.foods.find(i => i.id === id)
+    const food = this.foods.find((i) => i.id === id);
 
-    const res = food ? {
-      code: 0,
-      data: food,
-      message: 'Get food successfully'
-    } : {
-      code: 1,
-      data: null,
-      message: 'Not found'
-    }
+    const res = food
+      ? {
+          code: 0,
+          data: food,
+          message: 'Get food successfully',
+        }
+      : {
+          code: 1,
+          data: null,
+          message: 'Not found',
+        };
 
-    return of(res)
+    return of(res);
   }
 }

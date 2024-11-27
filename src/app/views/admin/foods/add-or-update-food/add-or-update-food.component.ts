@@ -16,13 +16,14 @@ import { DemoMceComponent } from '@components/demo-mce/demo-mce.component';
 import { DemoSelectComponent } from '@components/demo-select/demo-select.component';
 import { Tag } from '../../../../models/tag.model';
 import { DemoRadioComponent } from '@components/demo-radio/demo-radio.component';
-import { FoodType, FoodExtrast } from '../../../../models/food.model';
+import { FoodType, FoodExtrast, CreateFood } from '../../../../models/food.model';
 import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo-checkbox-group.component';
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
 import { getCurrentDateTimePicker } from '../../../../../utils/timer';
 import { CategoriesStore } from '@stores/categories.store';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FoodsService } from '@services/foods.service';
+import { FoodsStore } from '@stores/foods.store';
 
 interface RouteState {
   category?: Category;
@@ -50,8 +51,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private location = inject(Location);
   private fb = inject(FormBuilder);
   private categoriesStore = inject(CategoriesStore);
+  private foodsStore = inject(FoodsStore)
   private foodsService = inject(FoodsService)
   private route = inject(ActivatedRoute)
+  private router = inject(Router)
 
   fg = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -190,31 +193,29 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   createFood() {
-    // this.categoriesService.createCategory(this.fg.value as CreateCategory)
-    //   .subscribe(res => {
-    //     if (res.code !== 0) {
-    //       alert(res.message)
-    //       return
-    //     }
-    //     this.categoriesStore.loadCategories()
-    //     this.close()
-    //   })
+    const data = this.fg.value
+
+    this.foodsService.createFood({
+      ...data,
+      postDate: data.postDate ? new Date(data.postDate) : undefined
+    } as CreateFood)
+      .subscribe(res => {
+        if (res.code !== 0) {
+          alert(res.message)
+          return
+        }
+
+        this.foodsStore.loadFoods()
+        this.router.navigateByUrl('/admin/foods')
+      })
   }
 
   formSubmit() {
-    console.log(this.fg.value);
-    // this.fg.markAllAsTouched();
+    if (this.fg.invalid) {
+      return;
+    }
 
-    // if (this.fg.invalid) {
-    //   return;
-    // }
-
-    // if (!this.fg.value.imageUrl) {
-    //   this.isShowSaveWithoutImage = true;
-    //   return;
-    // }
-
-    // this.createFood();
+    this.createFood();
   }
 
   switchUseUrl(e: Event) {

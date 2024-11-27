@@ -9,6 +9,7 @@ interface SelectItem {
 }
 
 type Orientation = 'vertial' | 'horizontal';
+type OnChangeType = (string | number)[]
 
 @Component({
   selector: 'app-demo-checkbox-group',
@@ -29,7 +30,7 @@ export class DemoCheckboxGroupComponent
   selectedItems: SelectItem[] = [];
   group = '';
 
-  onChange: (v: SelectItem[]) => void = () => {};
+  onChange: (v: OnChangeType) => void = () => {};
   onTouched: () => void = () => {};
 
   @Input() orientation: Orientation = 'vertial';
@@ -43,7 +44,7 @@ export class DemoCheckboxGroupComponent
     this.selectedItems = v;
   }
 
-  registerOnChange(fn: (v: SelectItem[]) => void): void {
+  registerOnChange(fn: (v: OnChangeType) => void): void {
     this.onChange = fn;
   }
 
@@ -58,7 +59,7 @@ export class DemoCheckboxGroupComponent
       ? [...this.selectedItems, item]
       : this.selectedItems.filter((i) => i.value !== item.value);
 
-    this.onChange(this.selectedItems);
+    this.onChange(this.selectedItems.map(i => i.value));
   }
 
   bindItemChecked(item: SelectItem) {
