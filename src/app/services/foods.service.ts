@@ -18,7 +18,7 @@ export class FoodsService {
       description: 'Description Coca Cola 1',
       imageUrl:
         'http://localhost:3000/uploads/ae1e227c-abd4-4037-8500-9702496b4b9c.jpg',
-      price: 12,
+      price: 12000,
       tags: ['special_food', 'most_favorite'],
       type: 'drink',
       extrast: ['toping_1', 'toping_2'],
@@ -46,7 +46,7 @@ export class FoodsService {
       description: 'Description Coca Cola 2',
       imageUrl:
         "http://localhost:3000/uploads/4197f99f-9187-4d4c-9164-67028b99c604.jpg",
-      price: 32,
+      price: 320000,
       tags: ['most_favorite'],
       type: 'drink',
       extrast: [],
@@ -70,7 +70,7 @@ export class FoodsService {
       description: 'Description Chicken ABC',
       imageUrl:
         "http://localhost:3000/uploads/b34846a5-ed2e-423c-a2f8-d488ae8cbc2c.jpg",
-      price: 32,
+      price: 200,
       tags: ['new_food', 'special_food', 'most_favorite'],
       type: 'food',
       extrast: ['toping_1', 'toping_2', 'toping_3'],
