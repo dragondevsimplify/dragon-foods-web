@@ -28,6 +28,8 @@ interface RouteState {
   category?: Category;
 }
 
+type NullabelField = null | undefined
+
 @Component({
   selector: 'app-add-or-update-food',
   standalone: true,
@@ -51,14 +53,14 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private foodsService = inject(FoodsService)
   private route = inject(ActivatedRoute)
 
-  fg = this.fb.group({
+  fg = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    description: [''],
-    imageUrl: [''],
-    price: [undefined, [Validators.required, Validators.min(0)]],
-    tags: [[], Validators.required],
-    type: [undefined, Validators.required],
-    extrast: [[]],
+    description: [<string | NullabelField>''],
+    imageUrl: [<string | NullabelField>''],
+    price: [<number | NullabelField>undefined, [Validators.required, Validators.min(0)]],
+    tags: [<string[]>[], Validators.required],
+    type: ['', Validators.required],
+    extrast: [<string[]>[]],
     postDate: [getCurrentDateTimePicker(), Validators.required],
     categoryId: ['', Validators.required],
     variants: this.fb.array([]),
@@ -140,9 +142,19 @@ export class AddOrUpdateFoodComponent implements OnInit {
 
   private loadFood() {
     const { id } = this.route.snapshot.params
-    this.foodsService.getFoodById(id).subscribe(food => {
-      console.log(food)
-    })
+    if (id) {
+      this.foodsService.getFoodById(id).subscribe(res => {
+        if (res.code !== 0 || !res.data) {
+          alert(res.message)
+          return
+        }
+
+        this.fg.patchValue({
+          ...res.data,
+          postDate: res.data.postDate.toISOString().slice(0, 16)
+        })
+      })
+    }
   }
 
   private watchImageUrlChange(newImageUrl: string | null | undefined) {

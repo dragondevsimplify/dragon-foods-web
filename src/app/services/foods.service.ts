@@ -50,7 +50,7 @@ export class FoodsService {
       tags: ['most_favorite'],
       type: 'drink',
       extrast: [],
-      postDate: new Date('2024-11-29T01:28'),
+      postDate: new Date('2024-11-29T19:12'),
       categoryId: '6742a0e0ab7ce85a927b9182',
       variants: [
         {
@@ -74,7 +74,7 @@ export class FoodsService {
       tags: ['new_food', 'special_food', 'most_favorite'],
       type: 'food',
       extrast: ['toping_1', 'toping_2', 'toping_3'],
-      postDate: new Date('2024-11-29T01:28'),
+      postDate: new Date('2024-10-22T04:55'),
       categoryId: '6742d1bdab7ce85a927b9184',
       variants: [
         {
