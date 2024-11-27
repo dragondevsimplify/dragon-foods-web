@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { WatchPropertyChange } from 'app/decorators/property.decorator';
 
 interface SelectItem {
   value: string | number;

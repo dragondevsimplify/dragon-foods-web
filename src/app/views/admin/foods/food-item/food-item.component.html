@@ -1,0 +1,8 @@
+<div class="flex gap-6 p-6 bg-white text-zinc-800 border-2 border-solid border-gray-500 rounded-lg hover:shadow-lg transition-shadow">
+  <div class="w-32 h-32 overflow-hidden rounded-lg">
+    <img [src]="data.imageUrl || 'https://placehold.co/128'" alt="Category image" class="block object-cover object-center">
+  </div>
+  <div>
+    <div class="text-2xl font-semibold">{{ data.name }}</div>
+  </div>
+</div>
