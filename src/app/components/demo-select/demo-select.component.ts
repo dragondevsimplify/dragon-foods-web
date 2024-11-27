@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 interface SelectItem {
@@ -7,7 +14,7 @@ interface SelectItem {
   label: string;
 }
 
-type OnChangeType = string | number | (string | number)[]
+type OnChangeType = string | number | (string | number)[];
 
 @Component({
   selector: 'app-demo-select',
@@ -19,52 +26,58 @@ type OnChangeType = string | number | (string | number)[]
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DemoSelectComponent),
       multi: true,
-    }
-  ]
+    },
+  ],
 })
-export class DemoSelectComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class DemoSelectComponent
+  implements OnInit, OnChanges, ControlValueAccessor
+{
   isShowDropdown = false;
 
   selectedItems: SelectItem[] = [];
 
-  private _placeholder = ''
-  private _defaultSelectedItem?: SelectItem
-  private _defaulValue?: string | number
+  private _placeholder = '';
+  private _defaultSelectedItems?: SelectItem[];
+  private _defaulValue?: string | number;
 
-  onChange: (v: OnChangeType) => void = () => {}
-  onTouched: () => void = () => {}
+  onChange: (v: OnChangeType) => void = () => {};
+  onTouched: () => void = () => {};
 
   @Input({ required: true }) options: SelectItem[] = [];
   @Input() placeholder = 'Select';
   @Input() isMultiple = false;
 
   ngOnInit() {
-    this._placeholder = this.placeholder
+    this._placeholder = this.placeholder;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['options'] && this._defaulValue) {
-      const itemFound = this.options.find(i => i.value === this._defaulValue)
-      this.selectedItems = itemFound ? [itemFound] : []
-      this.bindPlaceholder()
+      const itemFound = this.options.find((i) => i.value === this._defaulValue);
+      this.selectedItems = itemFound ? [itemFound] : [];
+      this.bindPlaceholder();
     }
   }
 
   writeValue(v: string | number): void {
-    if (v) {
-      this._defaulValue = v
-      this._defaultSelectedItem = this.options.find(i => i.value === v)
-      this.selectedItems = this._defaultSelectedItem ? [this._defaultSelectedItem] : []
-      this.bindPlaceholder()
+    this._defaulValue = v;
+
+    if (Array.isArray(v) && v.length) {
+      this._defaultSelectedItems = this.options.filter(i => v.includes(i.value))
+    } else if (v) {
+      this._defaultSelectedItems = this.options.filter((i) => i.value === v);
     }
+
+    this.selectedItems = this._defaultSelectedItems ?? [];
+    this.bindPlaceholder();
   }
 
   registerOnChange(fn: (v: OnChangeType) => void): void {
-    this.onChange = fn
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn
+    this.onTouched = fn;
   }
 
   showDropdown(isShow: boolean) {
@@ -72,14 +85,14 @@ export class DemoSelectComponent implements OnInit, OnChanges, ControlValueAcces
   }
 
   toggleDropdown() {
-    this.isShowDropdown = !this.isShowDropdown
+    this.isShowDropdown = !this.isShowDropdown;
   }
 
   bindPlaceholder() {
     this.placeholder =
-        this.selectedItems.length > 1
-          ? this.selectedItems[0].label + `+${this.selectedItems.length - 1}`
-          : (this.selectedItems[0]?.label ?? this._placeholder);
+      this.selectedItems.length > 1
+        ? this.selectedItems[0].label + `+${this.selectedItems.length - 1}`
+        : this.selectedItems[0]?.label ?? this._placeholder;
   }
 
   selectItem(e: Event, item: SelectItem) {
@@ -90,21 +103,21 @@ export class DemoSelectComponent implements OnInit, OnChanges, ControlValueAcces
       : this.selectedItems.filter((i) => i.value !== item.value);
 
     if (this.isMultiple) {
-      this.onChange(this.selectedItems.map(i => i.value))
+      this.onChange(this.selectedItems.map((i) => i.value));
 
-      this.bindPlaceholder()
+      this.bindPlaceholder();
     } else {
-      this.placeholder = item.label
-      this.selectedItems = [item]
+      this.placeholder = item.label;
+      this.selectedItems = [item];
       this.showDropdown(false);
-      this.onChange(item.value)
+      this.onChange(item.value);
     }
   }
 
   bindItemChecked(item: SelectItem) {
     if (Array.isArray(this.selectedItems)) {
-      return this.selectedItems.find(i => i.value === item.value)
+      return this.selectedItems.find((i) => i.value === item.value);
     }
-    return null
+    return null;
   }
 }

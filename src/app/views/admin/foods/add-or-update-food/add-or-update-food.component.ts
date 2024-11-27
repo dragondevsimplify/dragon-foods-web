@@ -249,7 +249,9 @@ export class AddOrUpdateFoodComponent implements OnInit {
     this.isShowSaveWithoutImage = false;
   }
 
-  back() {}
+  back() {
+    this.router.navigateByUrl('/admin/foods')
+  }
 
   addVariant() {
     (this.fg.get('variants') as FormArray).push(this.fb.group({

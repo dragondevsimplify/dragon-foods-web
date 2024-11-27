@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateFood, Food } from '@models/food.model';
 import { Response, ResponseList } from '@models/response.model';
-import { environment } from 'environments/environment.development';
-import { Observable, of, tap } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
