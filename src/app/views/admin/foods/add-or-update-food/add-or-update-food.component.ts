@@ -27,7 +27,7 @@ interface RouteState {
 }
 
 @Component({
-  selector: 'app-add-food',
+  selector: 'app-add-or-update-food',
   standalone: true,
   imports: [
     CommonModule,

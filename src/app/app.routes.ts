@@ -3,6 +3,7 @@ import { AdminComponent } from './layouts/admin/admin.component';
 import { AuthComponent } from './layouts/auth/auth.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './views/web/home/home.component';
+import { PageNotFoundComponent } from '@components/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   {
@@ -57,5 +58,10 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     title: 'Home'
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    title: 'Page not found'
   }
 ];

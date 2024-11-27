@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: AddOrUpdateFoodComponent,
-    title: 'Add food'
+    title: 'Edit food'
   },
 ];
 
