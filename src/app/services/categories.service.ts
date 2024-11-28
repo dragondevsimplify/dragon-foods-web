@@ -19,6 +19,6 @@ export class CategoriesService {
   }
 
   getCategoryById(id: string) {
-
+    return this.http.get<Response<Category>>(environment.apiUrl + `/categories/${id}`)
   }
 }

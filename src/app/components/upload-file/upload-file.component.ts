@@ -65,7 +65,7 @@ export class UploadFileComponent {
 
     this.mediaService.uploadFile(this.imageFile).subscribe({
       next: (res) => {
-        if (res.code !== 0) {
+        if (res.code !== 0 || !res.data) {
           alert(res.message)
           this.isUploaded = false
           return

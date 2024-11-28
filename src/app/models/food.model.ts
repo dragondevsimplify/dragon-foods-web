@@ -14,7 +14,7 @@ export interface Food {
   variants: FoodVariant[];
 
   // Preloads
-  category?: Category
+  category?: Category | null
 }
 
 export interface FoodType {
@@ -33,6 +33,20 @@ export interface FoodVariant {
 }
 
 export interface CreateFood {
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  tags: string[];
+  type: string;
+  extrast: string[];
+  postDate: Date;
+  categoryId: string;
+  variants: FoodVariant[];
+}
+
+export interface UpdateFood {
+  id: string;
   name: string;
   description: string;
   price: number;

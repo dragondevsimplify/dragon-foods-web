@@ -21,6 +21,7 @@ import {
   FoodExtrast,
   CreateFood,
   Food,
+  UpdateFood,
 } from '../../../../models/food.model';
 import { DemoCheckboxGroupComponent } from '@components/demo-checkbox-group/demo-checkbox-group.component';
 import { DemoDatetimePickerComponent } from '@components/demo-datetime-picker/demo-datetime-picker.component';
@@ -30,7 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FoodsService } from '@services/foods.service';
 import { FoodsStore } from '@stores/foods.store';
 import moment from 'moment';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 interface RouteState {
   category?: Category;
@@ -63,9 +64,9 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private _currentFood?: Food
-  private _originalFormData?: unknown
-  private _detectFormValueChanged: boolean = false
+  private _currentFood?: Food;
+  private _originalFormData?: unknown;
+  private _detectFormValueChanged: boolean = false;
 
   fg = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -127,7 +128,7 @@ export class AddOrUpdateFoodComponent implements OnInit {
   ];
 
   get currentFood() {
-    return this._currentFood
+    return this._currentFood;
   }
 
   get imageUrlField() {
@@ -139,14 +140,14 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   get detectFormValueChanged() {
-    return this._detectFormValueChanged
+    return this._detectFormValueChanged;
   }
 
   ngOnInit() {
     this.categoriesStore.loadCategories();
 
     this.fg.valueChanges.subscribe((change) => {
-      this.detectFormValueChangedFunc(change)
+      this.detectFormValueChangedFunc(change);
       this.watchImageUrlChange(change.imageUrl);
     });
 
@@ -164,11 +165,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
 
   private detectFormValueChangedFunc(change: unknown) {
     if (!this._originalFormData) {
-      return
+      return;
     }
 
-    this._detectFormValueChanged = !_.isEqual(change, this._originalFormData)
-    console.log("🚀 ~ this._detectFormValueChanged:", this._detectFormValueChanged)
+    this._detectFormValueChanged = !_.isEqual(change, this._originalFormData);
   }
 
   private loadFood() {
@@ -181,6 +181,7 @@ export class AddOrUpdateFoodComponent implements OnInit {
         }
 
         const food = res.data;
+        console.log('food', food)
 
         this.fg.patchValue({
           ...food,
@@ -194,8 +195,8 @@ export class AddOrUpdateFoodComponent implements OnInit {
           });
         });
 
-        this._currentFood = food
-        this._originalFormData = structuredClone(this.fg.value)
+        this._currentFood = food;
+        this._originalFormData = structuredClone(this.fg.value);
       });
     }
   }
@@ -232,15 +233,26 @@ export class AddOrUpdateFoodComponent implements OnInit {
     });
   }
 
-  createFood() {
-    const data = this.fg.value;
+  createOrUpdateFood() {
+    const formValue = this.fg.value;
+    const data = {
+      ...formValue,
+      postDate: formValue.postDate ? new Date(formValue.postDate) : undefined,
+      id: this._currentFood?.id
+    };
 
-    this.foodsService
-      .createFood({
-        ...data,
-        postDate: data.postDate ? new Date(data.postDate) : undefined,
-      } as CreateFood)
-      .subscribe((res) => {
+    if (this._currentFood) {
+      this.foodsService.updateFood(data as UpdateFood).subscribe((res) => {
+        if (res.code !== 0) {
+          alert(res.message);
+          return;
+        }
+
+        this.foodsStore.loadFoods();
+        alert('Update food successfully')
+      });
+    } else {
+      this.foodsService.createFood(data as CreateFood).subscribe((res) => {
         if (res.code !== 0) {
           alert(res.message);
           return;
@@ -248,7 +260,9 @@ export class AddOrUpdateFoodComponent implements OnInit {
 
         this.foodsStore.loadFoods();
         this.router.navigateByUrl('/admin/foods');
+        alert('Create food successfully')
       });
+    }
   }
 
   formSubmit() {
@@ -256,7 +270,7 @@ export class AddOrUpdateFoodComponent implements OnInit {
       return;
     }
 
-    this.createFood();
+    this.createOrUpdateFood();
   }
 
   switchUseUrl(e: Event) {

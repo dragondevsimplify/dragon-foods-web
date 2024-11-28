@@ -31,7 +31,7 @@ export class LoginComponent {
 
     const user = this.fg.value as UserSignin
     this.authService.signin(user).subscribe(res => {
-      if (res.code !== 0) {
+      if (res.code !== 0 || !res.data) {
         alert(res.message)
         return
       }

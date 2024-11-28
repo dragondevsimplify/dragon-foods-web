@@ -34,7 +34,7 @@ export class RegisterComponent {
 
     const user = this.fg.value as UserSignup
     this.authService.signup(user).subscribe(res => {
-      if (res.code !== 0) {
+      if (res.code !== 0 || !res.data) {
         alert(res.message)
         return
       }

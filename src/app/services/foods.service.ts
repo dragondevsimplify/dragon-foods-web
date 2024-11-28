@@ -1,14 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CreateFood, Food } from '@models/food.model';
+import { CreateFood, Food, UpdateFood } from '@models/food.model';
 import { Response, ResponseList } from '@models/response.model';
-import { of, tap } from 'rxjs';
+import {
+  Observable,
+  of,
+  switchMap,
+  tap,
+  map,
+  from,
+  mergeMap,
+  toArray,
+} from 'rxjs';
+import { CategoriesService } from './categories.service';
+import { Category } from '@models/category.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FoodsService {
   private http = inject(HttpClient);
+  private categoriesService = inject(CategoriesService);
+
   foods: Food[] = [
     {
       id: 'FOOD1',
@@ -100,7 +113,7 @@ export class FoodsService {
   ];
 
   get newFoodId() {
-    const prefix = 'FOOD'
+    const prefix = 'FOOD';
     const ids = this.foods.map((i) => i.id).sort();
 
     if (!ids) {
@@ -121,30 +134,66 @@ export class FoodsService {
     return of<Response<Food>>({
       code: 0,
       data: {
-        ...model,
+        ...structuredClone(model),
         id: this.newFoodId,
       },
-      message: 'Get food successfully',
+      message: 'Create food successfully',
     }).pipe(
       tap(({ data: newFood }) => {
-        this.foods.push(newFood)
+        if (newFood) {
+          this.foods.push(newFood);
+        }
+      })
+    );
+  }
+
+  updateFood(model: UpdateFood) {
+    // return this.http.post<Response<Food>>(environment.apiUrl + '/foods', model);
+    return of<Response<Food>>({
+      code: 0,
+      data: structuredClone(model),
+      message: 'Update food successfully',
+    }).pipe(
+      tap(({ data }) => {
+        if (!data) {
+          return;
+        }
+
+        const existingFood = this.foods.find((i) => i.id === data.id);
+        if (existingFood) {
+          Object.assign(existingFood, data);
+        }
       })
     );
   }
 
   getFoods() {
     // return this.http.get<ResponseList<Food>>(environment.apiUrl + '/foods');
-    return of<ResponseList<Food>>({
-      code: 0,
-      data: {
-        list: structuredClone(this.foods),
-        totalPages: 1,
-        totalItems: 3,
-        pageSize: 10,
-        pageNumber: 1,
-      },
-      message: 'Get food successfully',
-    });
+    return from(this.foods).pipe(
+      mergeMap((food) =>
+        this.mapCategory(food.categoryId).pipe(
+          map((category) => ({
+            ...food,
+            category,
+          }))
+        )
+      ),
+      toArray(),
+      map((foods) => {
+        console.log('toArray', foods)
+        return {
+          code: 0,
+          data: {
+            list: foods,
+            totalPages: 1,
+            totalItems: 3,
+            pageSize: 10,
+            pageNumber: 1,
+          },
+          message: 'Get foods successfully',
+        }
+      })
+    );
   }
 
   getFoodById(id: string) {
@@ -153,7 +202,9 @@ export class FoodsService {
     const res = food
       ? {
           code: 0,
-          data: food,
+          data: {
+            ...food,
+          },
           message: 'Get food successfully',
         }
       : {
@@ -162,6 +213,40 @@ export class FoodsService {
           message: 'Not found',
         };
 
-    return of(res);
+    return of(res).pipe(
+      switchMap((res) => {
+        if (!res.data) {
+          return of(res);
+        }
+
+        const { categoryId } = res.data;
+
+        if (categoryId) {
+          return this.mapCategory(categoryId).pipe(
+            map((category) => ({
+              ...res,
+              data: {
+                ...res.data,
+                category,
+              },
+            }))
+          );
+        }
+
+        return of({
+          ...res,
+          data: {
+            ...res.data,
+            category: undefined,
+          },
+        });
+      })
+    );
+  }
+
+  mapCategory(categoryId: string): Observable<Category | null> {
+    return this.categoriesService
+      .getCategoryById(categoryId)
+      .pipe(map((res) => res.data));
   }
 }
