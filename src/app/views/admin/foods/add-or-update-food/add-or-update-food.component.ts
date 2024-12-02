@@ -147,15 +147,12 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.categoriesStore.loadCategories();
-
     this.fg.valueChanges.subscribe((change) => {
       this.detectFormValueChangedFunc(change);
       this.watchImageUrlChange(change.imageUrl);
     });
 
     const routeState = this.location.getState() as RouteState;
-
     this.category = routeState?.category;
     if (this.category) {
       this.fg.patchValue({
@@ -163,7 +160,27 @@ export class AddOrUpdateFoodComponent implements OnInit {
       });
     }
 
-    this.loadFood();
+    this.route.data.subscribe({
+      next: ({ food }) => {
+        this.fg.patchValue({
+          ...food,
+          postDate: moment(food.postDate).toISOString(true).slice(0, 16),
+        });
+
+        food.variants.forEach((variantForm: any) => {
+          this.addVariant({
+            name: variantForm.name,
+            size: variantForm.size,
+          });
+        });
+
+        this._currentFood = food;
+        this._originalFormData = structuredClone(this.fg.value);
+      },
+      error: (err) => {
+        alert(err)
+      }
+    })
   }
 
   private detectFormValueChangedFunc(change: unknown) {
@@ -172,35 +189,6 @@ export class AddOrUpdateFoodComponent implements OnInit {
     }
 
     this._detectFormValueChanged = !_.isEqual(change, this._originalFormData);
-  }
-
-  private loadFood() {
-    const { id } = this.route.snapshot.params;
-    if (id) {
-      this.foodsService.getFoodById(id).subscribe({
-        next: (food) => {
-          console.log('food', food)
-
-          this.fg.patchValue({
-            ...food,
-            postDate: moment(food.postDate).toISOString(true).slice(0, 16),
-          });
-
-          food.variants.forEach((variantForm) => {
-            this.addVariant({
-              name: variantForm.name,
-              size: variantForm.size,
-            });
-          });
-
-          this._currentFood = food;
-          this._originalFormData = structuredClone(this.fg.value);
-        },
-        error: (err) => {
-          alert(err)
-        }
-      });
-    }
   }
 
   private watchImageUrlChange(newImageUrl: string | null | undefined) {
