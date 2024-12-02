@@ -161,7 +161,9 @@ export class AddOrUpdateFoodComponent implements OnInit {
     }
 
     this.route.data.subscribe({
-      next: ({ food }) => {
+      next: ({ data }) => {
+        const { food } = data || {}
+
         this.fg.patchValue({
           ...food,
           postDate: moment(food.postDate).toISOString(true).slice(0, 16),

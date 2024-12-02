@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FoodsComponent } from './foods.component';
 import { AddOrUpdateFoodComponent } from './add-or-update-food/add-or-update-food.component';
-import { CategoriesResolver } from 'app/resolvers/categories.resolver';
-import { FoodByIdResolver } from 'app/resolvers/food-by-id.resolver';
+import { AddOrUpdateFoodResolver } from 'app/resolvers/add-or-update-food.resolver';
 
 const routes: Routes = [
   {
@@ -20,8 +19,7 @@ const routes: Routes = [
     component: AddOrUpdateFoodComponent,
     title: 'Edit food',
     resolve: {
-      categories: CategoriesResolver,
-      food: FoodByIdResolver
+      data: AddOrUpdateFoodResolver
     },
   },
 ];

@@ -58,6 +58,7 @@ export class CategoriesStore extends ComponentStore<State> {
   );
 
   readonly loadCategoriesOnce$ = this.select((state) => state.categories).pipe(
+    delay(3000),
     exhaustMap((categories) => {
       if (categories.length > 0) {
         return of(categories);
