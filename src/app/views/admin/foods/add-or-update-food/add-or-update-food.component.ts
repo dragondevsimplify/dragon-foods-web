@@ -140,7 +140,10 @@ export class AddOrUpdateFoodComponent implements OnInit {
   }
 
   get detectFormValueChanged() {
-    return this._detectFormValueChanged;
+    if (this._currentFood) {
+      return this._detectFormValueChanged;
+    }
+    return true
   }
 
   ngOnInit() {

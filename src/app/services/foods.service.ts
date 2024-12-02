@@ -11,6 +11,7 @@ import {
   from,
   mergeMap,
   toArray,
+  concatMap,
 } from 'rxjs';
 import { CategoriesService } from './categories.service';
 import { Category } from '@models/category.model';
@@ -130,21 +131,21 @@ export class FoodsService {
   }
 
   createFood(model: CreateFood) {
-    // return this.http.post<Response<Food>>(environment.apiUrl + '/foods', model);
-    return of<Response<Food>>({
-      code: 0,
-      data: {
-        ...structuredClone(model),
-        id: this.newFoodId,
-      },
-      message: 'Create food successfully',
-    }).pipe(
-      tap(({ data: newFood }) => {
-        if (newFood) {
-          this.foods.push(newFood);
-        }
-      })
-    );
+    return this.http.post<Response<Food>>('https://localhost:7098/foods', model);
+    // return of<Response<Food>>({
+    //   code: 0,
+    //   data: {
+    //     ...structuredClone(model),
+    //     id: this.newFoodId,
+    //   },
+    //   message: 'Create food successfully',
+    // }).pipe(
+    //   tap(({ data: newFood }) => {
+    //     if (newFood) {
+    //       this.foods.push(newFood);
+    //     }
+    //   })
+    // );
   }
 
   updateFood(model: UpdateFood) {
@@ -168,20 +169,19 @@ export class FoodsService {
   }
 
   getFoods() {
-    // return this.http.get<ResponseList<Food>>(environment.apiUrl + '/foods');
-    return from(this.foods).pipe(
-      mergeMap((food) =>
-        this.mapCategory(food.categoryId).pipe(
-          map((category) => ({
-            ...food,
-            category,
-          }))
-        )
-      ),
-      toArray(),
-      map((foods) => {
-        console.log('toArray', foods)
-        return {
+    return this.http
+      .get<Food[]>('https://localhost:7098/foods')
+      .pipe(
+        concatMap(foods => from(foods).pipe(
+          mergeMap(food => this.mapCategory(food.categoryId).pipe(
+            map(category => ({
+              ...food,
+              category
+            }))
+          )),
+          toArray()
+        )),
+        map((foods) => ({
           code: 0,
           data: {
             list: foods,
@@ -191,9 +191,30 @@ export class FoodsService {
             pageNumber: 1,
           },
           message: 'Get foods successfully',
-        }
-      })
-    );
+        }))
+      );
+    // return from(this.foods).pipe(
+    //   mergeMap((food) =>
+    //     this.mapCategory(food.categoryId).pipe(
+    //       map((category) => ({
+    //         ...food,
+    //         category,
+    //       }))
+    //     )
+    //   ),
+    //   toArray(),
+    //   map((foods) => ({
+    //     code: 0,
+    //     data: {
+    //       list: foods,
+    //       totalPages: 1,
+    //       totalItems: 3,
+    //       pageSize: 10,
+    //       pageNumber: 1,
+    //     },
+    //     message: 'Get foods successfully',
+    //   }))
+    // );
   }
 
   getFoodById(id: string) {
