@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateFood, Food, UpdateFood } from '@models/food.model';
-import { Response, ResponseList } from '@models/response.model';
+import { DataResponse, Response, ResponseList } from '@models/response.model';
 import {
   Observable,
   of,
@@ -12,6 +12,7 @@ import {
   mergeMap,
   toArray,
   concatMap,
+  catchError,
 } from 'rxjs';
 import { CategoriesService } from './categories.service';
 import { Category } from '@models/category.model';
@@ -131,7 +132,7 @@ export class FoodsService {
   }
 
   createFood(model: CreateFood) {
-    return this.http.post<Response<Food>>('https://localhost:7098/foods', model);
+    return this.http.post<Food>('https://localhost:7098/foods', model);
     // return of<Response<Food>>({
     //   code: 0,
     //   data: {
@@ -149,30 +150,36 @@ export class FoodsService {
   }
 
   updateFood(model: UpdateFood) {
-    // return this.http.post<Response<Food>>(environment.apiUrl + '/foods', model);
-    return of<Response<Food>>({
-      code: 0,
-      data: structuredClone(model),
-      message: 'Update food successfully',
-    }).pipe(
-      tap(({ data }) => {
-        if (!data) {
-          return;
-        }
+    return this.http.put<Food>(`https://localhost:7098/foods/${model.id}`, model);
+    // return of<Response<Food>>({
+    //   code: 0,
+    //   data: structuredClone(model),
+    //   message: 'Update food successfully',
+    // }).pipe(
+    //   tap(({ data }) => {
+    //     if (!data) {
+    //       return;
+    //     }
 
-        const existingFood = this.foods.find((i) => i.id === data.id);
-        if (existingFood) {
-          Object.assign(existingFood, data);
-        }
-      })
-    );
+    //     const existingFood = this.foods.find((i) => i.id === data.id);
+    //     if (existingFood) {
+    //       Object.assign(existingFood, data);
+    //     }
+    //   })
+    // );
   }
 
   getFoods() {
     return this.http
-      .get<Food[]>('https://localhost:7098/foods')
+      .get<DataResponse<Food>>('https://localhost:7098/foods', {
+        params: {
+          getAll: true,
+          page: 0,
+          pageSize: 0,
+        },
+      })
       .pipe(
-        concatMap(foods => from(foods).pipe(
+        concatMap(res => from(res.list).pipe(
           mergeMap(food => this.mapCategory(food.categoryId).pipe(
             map(category => ({
               ...food,
@@ -217,52 +224,70 @@ export class FoodsService {
     // );
   }
 
-  getFoodById(id: string) {
-    const food = this.foods.find((i) => i.id === id);
+  getFoodById(id: string): Observable<Food> {
+    return this.http
+      .get<Food>(`https://localhost:7098/foods/${id}`)
+      .pipe(
+        concatMap(food => {
+          const { categoryId } = food
+          if (!categoryId) {
+            return of(food)
+          }
 
-    const res = food
-      ? {
-          code: 0,
-          data: {
-            ...food,
-          },
-          message: 'Get food successfully',
-        }
-      : {
-          code: 1,
-          data: null,
-          message: 'Not found',
-        };
-
-    return of(res).pipe(
-      switchMap((res) => {
-        if (!res.data) {
-          return of(res);
-        }
-
-        const { categoryId } = res.data;
-
-        if (categoryId) {
-          return this.mapCategory(categoryId).pipe(
-            map((category) => ({
-              ...res,
-              data: {
-                ...res.data,
+          return this.mapCategory(categoryId)
+            .pipe(
+              map(category => ({
+                ...food,
                 category,
-              },
-            }))
-          );
-        }
+              }))
+            )
+        })
+      )
+    // const food = this.foods.find((i) => i.id === id);
 
-        return of({
-          ...res,
-          data: {
-            ...res.data,
-            category: undefined,
-          },
-        });
-      })
-    );
+    // const res = food
+    //   ? {
+    //       code: 0,
+    //       data: {
+    //         ...food,
+    //       },
+    //       message: 'Get food successfully',
+    //     }
+    //   : {
+    //       code: 1,
+    //       data: null,
+    //       message: 'Not found',
+    //     };
+
+    // return of(res).pipe(
+    //   switchMap((res) => {
+    //     if (!res.data) {
+    //       return of(res);
+    //     }
+
+    //     const { categoryId } = res.data;
+
+    //     if (categoryId) {
+    //       return this.mapCategory(categoryId).pipe(
+    //         map((category) => ({
+    //           ...res,
+    //           data: {
+    //             ...res.data,
+    //             category,
+    //           },
+    //         }))
+    //       );
+    //     }
+
+    //     return of({
+    //       ...res,
+    //       data: {
+    //         ...res.data,
+    //         category: undefined,
+    //       },
+    //     });
+    //   })
+    // );
   }
 
   mapCategory(categoryId: string): Observable<Category | null> {

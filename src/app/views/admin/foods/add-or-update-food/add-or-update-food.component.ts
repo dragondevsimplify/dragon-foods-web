@@ -177,29 +177,28 @@ export class AddOrUpdateFoodComponent implements OnInit {
   private loadFood() {
     const { id } = this.route.snapshot.params;
     if (id) {
-      this.foodsService.getFoodById(id).subscribe((res) => {
-        if (res.code !== 0 || !res.data) {
-          alert(res.message);
-          return;
-        }
+      this.foodsService.getFoodById(id).subscribe({
+        next: (food) => {
+          console.log('food', food)
 
-        const food = res.data;
-        console.log('food', food)
-
-        this.fg.patchValue({
-          ...food,
-          postDate: moment(food.postDate).toISOString(true).slice(0, 16),
-        });
-
-        food.variants.forEach((variantForm) => {
-          this.addVariant({
-            name: variantForm.name,
-            size: variantForm.size,
+          this.fg.patchValue({
+            ...food,
+            postDate: moment(food.postDate).toISOString(true).slice(0, 16),
           });
-        });
 
-        this._currentFood = food;
-        this._originalFormData = structuredClone(this.fg.value);
+          food.variants.forEach((variantForm) => {
+            this.addVariant({
+              name: variantForm.name,
+              size: variantForm.size,
+            });
+          });
+
+          this._currentFood = food;
+          this._originalFormData = structuredClone(this.fg.value);
+        },
+        error: (err) => {
+          alert(err)
+        }
       });
     }
   }
@@ -245,25 +244,25 @@ export class AddOrUpdateFoodComponent implements OnInit {
     };
 
     if (this._currentFood) {
-      this.foodsService.updateFood(data as UpdateFood).subscribe((res) => {
-        if (res.code !== 0) {
-          alert(res.message);
-          return;
+      this.foodsService.updateFood(data as UpdateFood).subscribe({
+        next: () => {
+          this.foodsStore.loadFoods();
+          alert('Update food successfully')
+        },
+        error: (err) => {
+          alert(err)
         }
-
-        this.foodsStore.loadFoods();
-        alert('Update food successfully')
       });
     } else {
-      this.foodsService.createFood(data as CreateFood).subscribe((res) => {
-        if (res.code !== 0) {
-          alert(res.message);
-          return;
+      this.foodsService.createFood(data as CreateFood).subscribe({
+        next: (foodRes) => {
+          this.foodsStore.loadFoods();
+          this.router.navigateByUrl('/admin/foods');
+          alert('Create food successfully')
+        },
+        error: (err) => {
+          alert(err)
         }
-
-        this.foodsStore.loadFoods();
-        this.router.navigateByUrl('/admin/foods');
-        alert('Create food successfully')
       });
     }
   }
