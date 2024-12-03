@@ -1,7 +1,7 @@
 import { Category } from "./category.model";
 
 export interface Food {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -46,7 +46,7 @@ export interface CreateFood {
 }
 
 export interface UpdateFood {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
